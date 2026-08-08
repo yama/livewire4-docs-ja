@@ -17,7 +17,7 @@ export default defineConfig({
         items: [{ text: 'Quickstart', link: '/quickstart' }],
       },
     ],
-    outline: '深さ2',
+    outline: 2,
     socialLinks: [
       { icon: 'github', link: 'https://github.com/yama/livewire4-docs-ja' },
     ],
