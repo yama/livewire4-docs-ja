@@ -1,0 +1,43 @@
+name: Sync upstream Quickstart
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Fetch upstream Quickstart
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p upstream/docs
+          curl --fail --silent --show-error --location \
+            https://raw.githubusercontent.com/livewire/livewire/4.x/docs/quickstart.md \
+            --output upstream/docs/quickstart.md.new
+          if cmp --silent upstream/docs/quickstart.md.new upstream/docs/quickstart.md 2>/dev/null; then
+            rm upstream/docs/quickstart.md.new
+          else
+            mv upstream/docs/quickstart.md.new upstream/docs/quickstart.md
+          fi
+
+      - name: Create pull request when upstream changed
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/sync-upstream-quickstart
+          delete-branch: true
+          commit-message: 'chore: upstream Quickstartを同期'
+          title: 'chore: upstream Quickstartを同期'
+          body: |
+            `livewire/livewire` の `4.x` ブランチから `docs/quickstart.md` を同期しました。
+
+            このPRではupstream原文だけを更新します。日本語訳の反映後に `.upstream-version` を更新してください。

@@ -1,0 +1,17 @@
+component: コンポーネント
+property: プロパティ
+action: アクション
+form: フォーム
+event: イベント
+lifecycle hook: ライフサイクルフック
+computed property: 算出プロパティ
+validation: バリデーション
+redirect: リダイレクト
+pagination: ページネーション
+query parameter: クエリパラメータ
+file upload: ファイルアップロード
+loading state: ローディング状態
+lazy loading: 遅延読み込み
+nested component: ネストされたコンポーネント
+full-page component: フルページコンポーネント
+single-file component: シングルファイルコンポーネント
