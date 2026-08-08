@@ -5,7 +5,7 @@ Livewireには、コンポーネントのライフサイクルの特定の時点
 利用できるコンポーネントライフサイクルフックは次のとおりです。
 
 | フックメソッド | 説明 |
-| --- | --- |
+|---|---|
 | `mount()` | コンポーネントが作成されたときに呼び出される |
 | `hydrate()` | 後続リクエストの開始時に、コンポーネントが再ハイドレートされたときに呼び出される |
 | `boot()` | 初回・後続を問わず、すべてのリクエストの開始時に呼び出される |
@@ -75,9 +75,9 @@ new class extends Component {
 
 `mount()`はLivewireを使ううえで重要なメソッドです。一般的な使い方については次を参照してください。
 
-- [プロパティの初期化](/properties#プロパティを初期化する)
-- [親コンポーネントからデータを受け取る](/nesting#子へpropsを渡す)
-- [ルートパラメータにアクセスする](/pages#ルートパラメータにアクセスする)
+* [プロパティの初期化](/properties#プロパティを初期化する)
+* [親コンポーネントからデータを受け取る](/nesting#子コンポーネントにpropsを渡す)
+* [ルートパラメータにアクセスする](/pages#ルートパラメータにアクセスする)
 
 ## Boot
 
@@ -115,17 +115,19 @@ new class extends Component {
 > 上記の方法は強力ですが、この用途には[Livewireの算出プロパティ](https://livewire.laravel.com/docs/4.x/computed-properties)を使う方が適していることがよくあります。
 
 > [!warning] 機密性のあるpublicプロパティは必ずロックする
-> 上の例では`$postId`に`#[Locked]` Attributeを使っています。クライアント側でユーザーが値を改ざんできないようにする場合は、利用前に値を認可するか、プロパティに`#[Locked]`を追加して変更できないようにしてください。
+> 上の例では`$postId`に`#[Locked]`属性を使っています。クライアント側でユーザーが値を改ざんできないようにする場合は、利用前に値を認可するか、プロパティに`#[Locked]`を追加して変更できないようにしてください。
 >
-> 詳しくは[Locked Attributeのドキュメント](https://livewire.laravel.com/docs/4.x/attribute-locked)を参照してください。
+> 詳しくは[Locked属性のドキュメント](https://livewire.laravel.com/docs/4.x/attribute-locked)を参照してください。
 
 ## Update
 
 クライアント側のユーザーは、`wire:model`を付けた入力欄の変更など、さまざまな方法でpublicプロパティを更新できます。
 
-Livewireには、publicプロパティの更新を受け止めるフックがあります。値が設定される前にバリデーションや認可を行ったり、決められた形式に整えたりできます。
+Livewireには、publicプロパティの更新を受け止める便利なフックがあります。値が設定される前にバリデーションや認可を行ったり、プロパティが決められた形式で設定されるようにしたりできます。
 
-次の例では、`updating()`を使って`$postId`プロパティの変更を防ぎます。実際のアプリケーションでは、この用途には上の例の`#[Locked]` Attributeを使うべきです。
+次の例では、`updating()`を使って`$postId`プロパティの変更を防ぎます。
+
+なお、この例のような実際のアプリケーションでは、上の例と同じように[`#[Locked]`属性](https://livewire.laravel.com/docs/4.x/attribute-locked)を使うべきです。
 
 ```php
 <?php // resources/views/components/post/⚡show.blade.php
@@ -150,7 +152,7 @@ new class extends Component {
 };
 ```
 
-`updating()`はプロパティが更新される前に実行されるため、無効な入力を検出して更新を防げます。`updated()`を使うと、プロパティの値が一貫するようにできます。
+上の`updating()`メソッドはプロパティが更新される前に実行されるため、無効な入力を検出してプロパティの更新を防げます。以下は、`updated()`を使ってプロパティの値が一貫するようにする例です。
 
 ```php
 <?php // resources/views/components/user/⚡create.blade.php
@@ -175,22 +177,36 @@ new class extends Component {
 };
 ```
 
-これでクライアント側で`$username`が更新されるたびに、値が常に小文字になります。
+これでクライアント側で`$username`プロパティが更新されるたびに、値が常に小文字になります。
 
-更新フックでは特定のプロパティを対象にすることが多いため、メソッド名にプロパティ名を直接指定することもできます。
+更新フックでは特定のプロパティを対象にすることが多いため、Livewireではメソッド名の一部としてプロパティ名を直接指定できます。先ほどの例を書き換えると次のようになります。
 
 ```php
-public function updatedUsername()
-{
-    $this->username = strtolower($this->username);
-}
+<?php // resources/views/components/user/⚡create.blade.php
+
+use Livewire\Component;
+
+new class extends Component {
+    public $username = '';
+
+    public $email = '';
+
+    public function updatedUsername()
+    {
+        $this->username = strtolower($this->username);
+    }
+
+    // ...
+};
 ```
 
-`updating`フックにも同じ方法を使えます。
+もちろん、`updating`フックにも同じ方法を適用できます。
 
 ### 配列
 
-配列プロパティでは、変更された要素を示す追加の`$key`引数が渡されます。特定のキーではなく配列自体を更新した場合、`$key`は`null`です。
+配列プロパティでは、変更された要素を指定するため、これらのメソッドに追加の`$key`引数が渡されます。
+
+特定のキーではなく配列自体が更新された場合、`$key`引数は`null`になる点に注意してください。
 
 ```php
 <?php // resources/views/components/preferences/⚡edit.blade.php
@@ -212,9 +228,13 @@ new class extends Component {
 
 ## HydrateとDehydrate
 
-`hydrate`と`dehydrate`はあまり知られておらず、使われる機会も多くないフックです。ただし、特定のケースでは強力な機能になります。
+HydrateとDehydrateは、あまり知られておらず、使われる機会も多くないフックです。ただし、特定のシナリオでは強力な機能になります。
 
-`dehydrate`と`hydrate`は、Livewireコンポーネントをクライアント側向けのJSONにシリアライズし、次のリクエストでPHPオブジェクトに戻す処理を指します。詳しくは[Hydrationのドキュメント](https://livewire.laravel.com/docs/4.x/hydration)を参照してください。
+「dehydrate」と「hydrate」という用語は、Livewireコンポーネントをクライアント側向けのJSONにシリアライズし、次のリクエストでPHPオブジェクトに戻す処理を指します。
+
+Livewireのコードベースとドキュメントでは、この処理を指すために「hydrate」と「dehydrate」という用語をよく使います。これらの用語をより明確に理解したい場合は、[Hydrationのドキュメント](https://livewire.laravel.com/docs/4.x/hydration)を参照してください。
+
+Eloquentモデルの代わりにカスタムの[データ転送オブジェクト（DTO）](https://en.wikipedia.org/wiki/Data_transfer_object)を使ってコンポーネントに投稿データを保存するため、`mount()`、`hydrate()`、`dehydrate()`をすべて一緒に使う例を見てみましょう。
 
 ```php
 <?php // resources/views/components/post/⚡show.blade.php
@@ -227,6 +247,7 @@ new class extends Component {
     public function mount($title, $content)
     {
         // 最初の初回リクエストの開始時に実行...
+
         $this->post = new PostDto([
             'title' => $title,
             'content' => $content,
@@ -236,13 +257,15 @@ new class extends Component {
     public function hydrate()
     {
         // すべての「後続」リクエストの開始時に実行...
-        // 初回リクエストでは実行されず、mount()が実行される...
+        // 初回リクエストでは実行されず、「mount」が実行される...
+
         $this->post = new PostDto($this->post);
     }
 
     public function dehydrate()
     {
         // すべてのリクエストの終了時に実行...
+
         $this->post = $this->post->toArray();
     }
 
@@ -250,11 +273,13 @@ new class extends Component {
 };
 ```
 
-これで、コンポーネント内のアクションなどから、プリミティブなデータではなく`PostDto`オブジェクトにアクセスできます。ただし、この例は`hydrate()`と`dehydrate()`の性質を示すためのもので、実際には[WireableまたはSynthesizer](https://livewire.laravel.com/docs/4.x/properties#supporting-custom-types)を使うことが推奨されます。
+これで、コンポーネント内のアクションやその他の場所から、プリミティブなデータではなく`PostDto`オブジェクトにアクセスできます。
+
+上の例は主に、`hydrate()`と`dehydrate()`フックの能力と性質を示すものです。ただし、実際には代わりに[WireableまたはSynthesizer](/properties#カスタム型をサポートする)を使うことが推奨されます。
 
 ## Render
 
-コンポーネントのBladeビューを描画する処理にフックするには、`rendering()`と`rendered()`を使います。
+コンポーネントのBladeビューを描画する処理にフックしたい場合は、`rendering()`と`rendered()`フックを使います。
 
 ```php
 <?php // resources/views/components/post/⚡index.blade.php
@@ -272,14 +297,16 @@ new class extends Component {
 
     public function rendering($view, $data)
     {
-        // ビューが描画される前に実行...
-        // $view: 描画されるビュー
+        // 渡されたビューが描画される前に実行...
+        //
+        // $view: これから描画されるビュー
         // $data: ビューに渡されるデータ
     }
 
     public function rendered($view, $html)
     {
-        // ビューが描画された後に実行...
+        // 渡されたビューが描画された後に実行...
+        //
         // $view: 描画されたビュー
         // $html: 最終的に描画されたHTML
     }
@@ -290,62 +317,170 @@ new class extends Component {
 
 ## Exception
 
-エラーを受け止めると、エラーメッセージをカスタマイズしたり、特定の例外を無視したりできる場合があります。`exception()`フックでは`$error`を確認し、`$stopPropagation`で処理を捕捉できます。コードの実行を止めて早期リターンする強力なパターンにも使われ、`validate()`などの内部メソッドもこの仕組みを利用しています。
+エラーを受け止めて捕捉すると、エラーメッセージをカスタマイズしたり、特定の種類の例外を無視したりできる場合があります。`exception()`フックを使うと、まさにそれができます。`$error`を確認し、`$stopPropagation`パラメータを使って問題を捕捉できます。
+
+また、コードの実行を止めて早期リターンする強力なパターンも利用できます。`validate()`などの内部メソッドはこの仕組みで動作しています。
 
 ```php
-public function exception($e, $stopPropagation) {
-    if ($e instanceof NotFoundException) {
-        $this->notify('投稿が見つかりません');
-        $stopPropagation();
+<?php // resources/views/components/post/⚡show.blade.php
+
+use Livewire\Component;
+
+new class extends Component {
+    public function mount() // [tl! highlight:3]
+    {
+        $this->post = Post::find($this->postId);
     }
-}
+
+    public function exception($e, $stopPropagation) {
+        if ($e instanceof NotFoundException) {
+            $this->notify('投稿が見つかりません');
+            $stopPropagation();
+        }
+    }
+
+    // ...
+};
 ```
 
 ## Trait内でフックを使う
 
-Traitはコンポーネント間でコードを再利用したり、処理を専用ファイルへ切り出したりするのに便利です。
+Traitはコンポーネント間でコードを再利用したり、1つのコンポーネントからコードを専用ファイルへ取り出したりするのに便利です。
 
-複数のTraitが同じライフサイクルフックを宣言して衝突するのを避けるため、Livewireでは現在のTrait名をcamelCaseにした名前をフックメソッドへ付けられます。
+複数のTraitがライフサイクルフックのメソッドを宣言するときに互いに衝突しないよう、Livewireでは、現在のTraitを宣言するTrait名を_camelCase_にした名前をフックメソッドの先頭に付けられます。
+
+こうすることで、複数のTraitで同じライフサイクルフックを使っても、メソッド定義が衝突しません。
+
+以下は、`HasPostForm`というTraitを参照するコンポーネントの例です。
+
+```php
+<?php // resources/views/components/post/⚡create.blade.php
+
+use Livewire\Component;
+
+new class extends Component {
+    use HasPostForm;
+
+    // ...
+};
+```
+
+次は、利用できるすべてのプレフィックス付きフックを含む、実際の`HasPostForm` Traitです。
 
 ```php
 trait HasPostForm
 {
     public $title = '';
+
     public $content = '';
 
-    public function mountHasPostForm() {}
-    public function hydrateHasPostForm() {}
-    public function bootHasPostForm() {}
-    public function updatingHasPostForm() {}
-    public function updatedHasPostForm() {}
-    public function renderingHasPostForm() {}
-    public function renderedHasPostForm() {}
-    public function dehydrateHasPostForm() {}
+    public function mountHasPostForm()
+    {
+        // ...
+    }
+
+    public function hydrateHasPostForm()
+    {
+        // ...
+    }
+
+    public function bootHasPostForm()
+    {
+        // ...
+    }
+
+    public function updatingHasPostForm()
+    {
+        // ...
+    }
+
+    public function updatedHasPostForm()
+    {
+        // ...
+    }
+
+    public function renderingHasPostForm()
+    {
+        // ...
+    }
+
+    public function renderedHasPostForm()
+    {
+        // ...
+    }
+
+    public function dehydrateHasPostForm()
+    {
+        // ...
+    }
+
+    // ...
 }
 ```
 
-コンポーネント側では`use HasPostForm;`として利用します。
-
 ## Form Object内でフックを使う
 
-LivewireのForm Objectはプロパティ更新フックをサポートします。フォームオブジェクトのプロパティが変わったときに処理を実行でき、[コンポーネントの更新フック](#update)と同じように動作します。
+LivewireのForm Objectはプロパティ更新フックをサポートします。フォームオブジェクト内のプロパティが変化したときに処理を実行でき、[コンポーネントの更新フック](#update)と同じように動作します。
+
+以下は、`PostForm`フォームオブジェクトを使うコンポーネントの例です。
+
+```php
+<?php // resources/views/components/post/⚡create.blade.php
+
+use Livewire\Component;
+
+new class extends Component {
+    public PostForm $form;
+
+    // ...
+};
+```
+
+次は、利用できるすべてのフックを含む`PostForm`フォームオブジェクトです。
 
 ```php
 namespace App\Livewire\Forms;
 
+use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class PostForm extends Form
 {
     public $title = '';
+
     public $tags = [];
 
-    public function updating($property, $value) {}
-    public function updated($property, $value) {}
-    public function updatingTitle($value) {}
-    public function updatedTitle($value) {}
-    public function updatingTags($value, $key) {}
-    public function updatedTags($value, $key) {}
+    public function updating($property, $value)
+    {
+        // ...
+    }
+
+    public function updated($property, $value)
+    {
+        // ...
+    }
+
+    public function updatingTitle($value)
+    {
+        // ...
+    }
+
+    public function updatedTitle($value)
+    {
+        // ...
+    }
+
+    public function updatingTags($value, $key)
+    {
+        // ...
+    }
+
+    public function updatedTags($value, $key)
+    {
+        // ...
+    }
+
+    // ...
 }
 ```
 
@@ -354,4 +489,4 @@ class PostForm extends Form
 - **[プロパティ](/properties)** — `mount()`と`boot()`でプロパティを初期化する
 - **[コンポーネント](/components)** — コンポーネント作成時にフックが実行されるタイミングを理解する
 - **[ページ](/pages)** — `mount()`でルートパラメータを受け取る
-- **[Hydration](https://livewire.laravel.com/docs/4.x/hydration)** — `hydrate()`と`dehydrate()`を理解する
+- **[Hydration](https://livewire.laravel.com/docs/4.x/hydration)** — `hydrate()`と`dehydrate()`フックを理解する
