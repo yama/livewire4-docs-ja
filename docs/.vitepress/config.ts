@@ -112,6 +112,21 @@ export default defineConfig({
           { text: '@teleport', link: '/directive-teleport' },
         ],
       },
+      {
+        text: 'Advanced',
+        items: [
+          { text: 'Morphing', link: '/morph' },
+          { text: 'Hydration', link: '/hydration' },
+          { text: 'Nesting', link: '/understanding-nesting' },
+          { text: 'Troubleshooting', link: '/troubleshooting' },
+          { text: 'Security', link: '/security' },
+          { text: 'CSP', link: '/csp' },
+          { text: 'JavaScript', link: '/javascript' },
+          { text: 'Synthesizers', link: '/synthesizers' },
+          { text: 'Package Development', link: '/packages' },
+          { text: 'Contribution Guide', link: '/contribution-guide' },
+        ],
+      },
     ],
     outline: 2,
     socialLinks: [
