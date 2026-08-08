@@ -103,6 +103,15 @@ export default defineConfig({
           { text: 'Validate', link: '/attribute-validate' },
         ],
       },
+      {
+        text: 'Bladeディレクティブ',
+        items: [
+          { text: '@island', link: '/directive-island' },
+          { text: '@placeholder', link: '/directive-placeholder' },
+          { text: '@persist', link: '/directive-persist' },
+          { text: '@teleport', link: '/directive-teleport' },
+        ],
+      },
     ],
     outline: 2,
     socialLinks: [
