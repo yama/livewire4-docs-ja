@@ -20,6 +20,20 @@ export default defineConfig({
           { text: 'アップグレードガイド', link: '/upgrading' },
         ],
       },
+      {
+        text: '基本',
+        items: [
+          { text: 'コンポーネント', link: '/components' },
+          { text: 'ページ', link: '/pages' },
+          { text: 'プロパティ', link: '/properties' },
+          { text: 'アクション', link: '/actions' },
+          { text: 'フォーム', link: '/forms' },
+          { text: 'イベント', link: '/events' },
+          { text: 'ライフサイクルフック', link: '/lifecycle-hooks' },
+          { text: 'コンポーネントのネスト', link: '/nesting' },
+          { text: 'テスト', link: '/testing' },
+        ],
+      },
     ],
     outline: 2,
     socialLinks: [
