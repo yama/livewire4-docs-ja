@@ -34,6 +34,18 @@ export default defineConfig({
           { text: 'テスト', link: '/testing' },
         ],
       },
+      {
+        text: '機能',
+        items: [
+          { text: 'Alpine', link: '/alpine' },
+          { text: 'スタイル', link: '/styles' },
+          { text: 'ナビゲーション', link: '/navigate' },
+          { text: 'Island', link: '/islands' },
+          { text: '遅延読み込み', link: '/lazy' },
+          { text: 'ローディング状態', link: '/loading-states' },
+          { text: 'バリデーション', link: '/validation' },
+        ],
+      },
     ],
     outline: 2,
     socialLinks: [
