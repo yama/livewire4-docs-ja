@@ -378,5 +378,5 @@ class DashboardTest extends TestCase
 
 - **[Island](/islands)** — 一つのコンポーネント内で更新を分離する
 - **[ローディング状態](/loading-states)** — コンポーネントの読み込み中にプレースホルダーを表示する
-- **[@placeholder](https://livewire.laravel.com/docs/4.x/directive-placeholder)** — プレースホルダー内容を定義する
-- **[Lazy属性](https://livewire.laravel.com/docs/4.x/attribute-lazy)** — コンポーネントを遅延読み込み対象にする
+- **[@placeholder](/directive-placeholder)** — プレースホルダー内容を定義する
+- **[Lazy属性](/attribute-lazy)** — コンポーネントを遅延読み込み対象にする

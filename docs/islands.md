@@ -345,5 +345,5 @@ Island内で `wire:poll` を使うと、そのIslandだけを一定間隔で更�
 
 - **[ネスト](/nesting)** — 子コンポーネントを使う別の方法
 - **[遅延読み込み](/lazy)** — 高コストな内容の読み込みを遅延する
-- **[算出プロパティ](https://livewire.laravel.com/docs/4.x/computed-properties)** — メモ化でIslandのパフォーマンスを最適化する
-- **[@island](https://livewire.laravel.com/docs/4.x/directive-island)** — 独立した更新領域を作成する
+- **[算出プロパティ](/computed-properties)** — メモ化でIslandのパフォーマンスを最適化する
+- **[@island](/directive-island)** — 独立した更新領域を作成する

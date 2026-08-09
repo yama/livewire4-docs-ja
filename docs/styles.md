@@ -203,6 +203,6 @@ new class extends Component {
 
 ## 関連項目
 
-- **[JavaScript](https://livewire.laravel.com/docs/4.x/javascript)** - コンポーネントでJavaScriptを使う
+- **[JavaScript](/javascript)** - コンポーネントでJavaScriptを使う
 - **[コンポーネント](/components)** - コンポーネントの形式と構成
 - **[Alpine](/alpine)** - Alpine.jsによるクライアント側のインタラクティブ性

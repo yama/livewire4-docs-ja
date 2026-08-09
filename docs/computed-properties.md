@@ -350,7 +350,7 @@ new class extends Component {
 
 ## 別の方法: Sessionプロパティ
 
-クロスリクエストのキャッシュを使わず、ページ更新後も単純な値を保持したい場合は、算出プロパティの代わりに[`#[Session]` 属性](https://livewire.laravel.com/docs/4.x/attribute-session)を検討してください。
+クロスリクエストのキャッシュを使わず、ページ更新後も単純な値を保持したい場合は、算出プロパティの代わりに[`#[Session]` 属性](/attribute-session)を検討してください。
 
 Sessionプロパティは、次のような場合に便利です。
 
@@ -369,11 +369,11 @@ public $search = '';
 
 URLパラメータや算出プロパティのキャッシュを使わず、ページ更新後も検索値を保持できます。
 
-[Sessionプロパティについて詳しく読む →](https://livewire.laravel.com/docs/4.x/attribute-session)
+[Sessionプロパティについて詳しく読む →](/attribute-session)
 
 ## 関連項目
 
 - **[プロパティ](/properties)** — 基本的なプロパティ管理を理解する
 - **[Island](/islands)** — 遅延された算出値でパフォーマンスを最適化する
-- **[Computed属性](https://livewire.laravel.com/docs/4.x/attribute-computed)** — メモ化に `#[Computed]` を使う
+- **[Computed属性](/attribute-computed)** — メモ化に `#[Computed]` を使う
 - **[コンポーネント](/components)** — ビューで算出プロパティへアクセスする

@@ -22,6 +22,13 @@ Route::livewire('/users', 'pages::show-users');
 
 リンクをクリックすると、Livewireはブラウザの移動を防ぎ、裏側でページを要求してローディングバーを表示し、受け取ったHTMLでURL、title、bodyを置き換えます。これによりページの読み込みが高速になり、JavaScript製SPAのような操作感になります。
 
+処理の流れは次のとおりです。
+
+* ユーザーがリンクをクリックする
+* Livewireがブラウザの通常のページ移動を防ぐ
+* Livewireがバックグラウンドでページを要求し、ページ上部にローディングバーを表示する
+* 新しいHTMLを受信すると、URL、`<title>`、`<body>`の内容を新しいページのものへ置き換える
+
 ## リダイレクト
 
 ```php
@@ -32,7 +39,14 @@ return $this->redirect('/posts', navigate: true);
 
 ## リンクのプリフェッチ
 
-デフォルトではマウスボタンを押した時点でページの要求を開始します。より積極的に行うには `.hover` 修飾子を使います。
+デフォルトでは、リンクをクリックするためにマウスボタンを押した時点でページの要求を開始します。
+
+* ユーザーがマウスボタンを押す
+* Livewireがページの要求を開始する
+* ユーザーがボタンを離してクリックを完了する
+* Livewireが要求を完了して新しいページへ移動する
+
+マウスボタンを押してから離すまでの短い時間でも、サーバーからページの半分、場合によってはページ全体を読み込めることがあります。より積極的に行うには `.hover` 修飾子を使います。
 
 ```blade
 <a href="/posts" wire:navigate.hover>投稿</a>
@@ -120,7 +134,7 @@ return $this->redirect('/posts', navigate: true);
 > [!tip] 単純さを優先するならdata-current
 > どちらも便利ですが、`data-current` は追加ディレクティブが不要で、Tailwindのdata属性バリアントとも自然に連携するため、より単純で柔軟です。
 
-詳しくは[wire:currentのドキュメント](https://livewire.laravel.com/docs/4.x/wire-current)を参照してください。
+詳しくは[wire:currentのドキュメント](/wire-current)を参照してください。
 
 ### スクロール位置を保持する
 
@@ -137,6 +151,12 @@ return $this->redirect('/posts', navigate: true);
 ## JavaScriptフック
 
 ページ移動では `livewire:navigate`、`livewire:navigating`、`livewire:navigated` が発生します。手動の `Livewire.navigate()`、ナビゲーション付きリダイレクト、戻る・進むも対象です。
+
+利用できるイベントは次の3つです。
+
+* `livewire:navigate`
+* `livewire:navigating`
+* `livewire:navigated`
 
 ```js
 document.addEventListener('livewire:navigate', (event) => {
@@ -281,6 +301,6 @@ body全体が置き換えられるため、新ページのscriptは実行され�
 ## 関連項目
 
 - **[ページ](/pages)** — ルーティング可能なページコンポーネントを作成する
-- **[リダイレクト](https://livewire.laravel.com/docs/4.x/redirecting)** — アクションから移動する
-- **[@persist](https://livewire.laravel.com/docs/4.x/directive-persist)** — ページ間で要素を保持する
-- **[wire:navigate](https://livewire.laravel.com/docs/4.x/wire-navigate)** — リンクにSPAナビゲーションを追加する
+- **[リダイレクト](/redirecting)** — アクションから移動する
+- **[@persist](/directive-persist)** — ページ間で要素を保持する
+- **[wire:navigate](/wire-navigate)** — リンクにSPAナビゲーションを追加する

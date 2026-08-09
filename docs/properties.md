@@ -222,7 +222,7 @@ new class extends Component {
 > EloquentコレクションとモデルをLivewireのプロパティに保存する場合は、次の制限に注意してください。
 >
 > - **クエリの制約は保持されません:** `select(...)`のような追加のクエリ制約は、後続のリクエストで再適用されません。詳しくは[リクエスト間でEloquentの制約が保持されない](#リクエスト間でeloquentの制約が保持されない)を参照してください。
-> - **パフォーマンスへの影響:** 大きなEloquentコレクションをプロパティとして保存すると、コンポーネントがハイドレートされるたびにLivewireがデータベースクエリを再実行するため、パフォーマンスの問題が発生する可能性があります。コストの高いクエリには、データがテンプレートから実際にアクセスされたときだけ実行される[算出プロパティ](https://livewire.laravel.com/docs/4.x/computed-properties)の利用を検討してください。
+> - **パフォーマンスへの影響:** 大きなEloquentコレクションをプロパティとして保存すると、コンポーネントがハイドレートされるたびにLivewireがデータベースクエリを再実行するため、パフォーマンスの問題が発生する可能性があります。コストの高いクエリには、データがテンプレートから実際にアクセスされたときだけ実行される[算出プロパティ](/computed-properties)の利用を検討してください。
 
 これらのさまざまな型としてプロパティを設定する簡単な例を見てみましょう。
 
@@ -250,7 +250,7 @@ Livewireでは、2つの強力な仕組みを通じて、アプリケーショ�
 * Wireable
 * Synthesizer
 
-Wireableはほとんどのアプリケーションで簡単に使えるため、ここで説明します。より高度なユーザーやパッケージ作成者で、より柔軟な仕組みが必要な場合は、[Synthesizerが適しています](https://livewire.laravel.com/docs/4.x/synthesizers)。
+Wireableはほとんどのアプリケーションで簡単に使えるため、ここで説明します。より高度なユーザーやパッケージ作成者で、より柔軟な仕組みが必要な場合は、[Synthesizerが適しています](/synthesizers)。
 
 #### Wireable
 
@@ -321,7 +321,7 @@ class Customer implements Wireable
 
 これでLivewireコンポーネントのプロパティに`Customer`オブジェクトを自由に設定でき、LivewireはそのオブジェクトをJSONへ変換したり、PHPへ戻したりできるようになります。
 
-前述のとおり、より広範かつ強力に型をサポートしたい場合、LivewireにはSynthesizerがあります。これはさまざまなプロパティの型を扱うための高度な内部機構です。[Synthesizerについて詳しく学ぶ](https://livewire.laravel.com/docs/4.x/synthesizers)
+前述のとおり、より広範かつ強力に型をサポートしたい場合、LivewireにはSynthesizerがあります。これはさまざまなプロパティの型を扱うための高度な内部機構です。[Synthesizerについて詳しく学ぶ](/synthesizers)
 
 ## JavaScriptからプロパティにアクセスする
 
@@ -492,7 +492,7 @@ new class extends Component {
 
 `#[Locked]`を使うことで、このプロパティがコンポーネントクラスの外部で操作されていないとみなせます。
 
-プロパティのロックについて詳しくは、[Locked属性のドキュメント](https://livewire.laravel.com/docs/4.x/attribute-locked)を参照してください。
+プロパティのロックについて詳しくは、[Locked属性のドキュメント](/attribute-locked)を参照してください。
 
 #### Eloquentモデルとロック
 
@@ -609,7 +609,7 @@ new class extends Component {
 
 Livewireが後続のリクエストでこのプロパティのJSONをPHPへ_ハイドレート_すると、select制約は失われます。
 
-Eloquentクエリの完全性を保つため、プロパティではなく[算出プロパティ](https://livewire.laravel.com/docs/4.x/computed-properties)を使うことをおすすめします。
+Eloquentクエリの完全性を保つため、プロパティではなく[算出プロパティ](/computed-properties)を使うことをおすすめします。
 
 算出プロパティは、`#[Computed]`属性でマークしたコンポーネントのメソッドです。コンポーネントの状態の一部として保存されず、その場で評価される動的なプロパティとしてアクセスできます。
 
@@ -676,12 +676,12 @@ new class extends Component {
 
 その理由は、算出プロパティにはパフォーマンス上の利点があるためです。1回のリクエスト中に初めて使われた後、算出プロパティは自動的にメモ化されます。つまりコンポーネント内で`$this->todos`に自由にアクセスしても、実際のメソッドは1回しか呼び出されないため、同じリクエスト中にコストの高いクエリが何度も実行される心配がありません。
 
-詳しくは、[算出プロパティのドキュメント](https://livewire.laravel.com/docs/4.x/computed-properties)を参照してください。
+詳しくは、[算出プロパティのドキュメント](/computed-properties)を参照してください。
 
 ## 関連項目
 
 - **[フォーム](/forms)** — `wire:model`でプロパティをフォーム入力にバインドする
-- **[算出プロパティ](https://livewire.laravel.com/docs/4.x/computed-properties)** — 自動メモ化による派生値を作成する
-- **[バリデーション](https://livewire.laravel.com/docs/4.x/validation)** — 保存前にプロパティの値を検証する
-- **[Locked Attribute](https://livewire.laravel.com/docs/4.x/attribute-locked)** — クライアント側からプロパティを操作できないようにする
-- **[Alpine](https://livewire.laravel.com/docs/4.x/alpine)** — JavaScriptからプロパティにアクセスし、操作する
+- **[算出プロパティ](/computed-properties)** — 自動メモ化による派生値を作成する
+- **[バリデーション](/validation)** — 保存前にプロパティの値を検証する
+- **[Locked Attribute](/attribute-locked)** — クライアント側からプロパティを操作できないようにする
+- **[Alpine](/alpine)** — JavaScriptからプロパティにアクセスし、操作する

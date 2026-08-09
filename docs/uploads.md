@@ -439,4 +439,4 @@ Livewireは開発者がすべてのファイルをバリデーションまたは
 - **[フォーム](/forms)** — フォームでファイルアップロードを扱う
 - **[バリデーション](/validation)** — アップロードしたファイルを検証する
 - **[ローディング状態](/loading-states)** — アップロードの進捗表示を行う
-- **[wire:model](https://livewire.laravel.com/docs/4.x/wire-model)** — ファイル入力をプロパティへバインドする
+- **[wire:model](/wire-model)** — ファイル入力をプロパティへバインドする

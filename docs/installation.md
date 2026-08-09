@@ -287,4 +287,4 @@ php artisan route:clear
 - サポート対象のPHP（8.1以降）とLaravel（10以降）を使っている
 - アプリケーションキャッシュを削除する：`php artisan cache:clear`
 
-問題が解決しない場合は、より詳細なデバッグ手順について[トラブルシューティングドキュメント](https://livewire.laravel.com/docs/4.x/troubleshooting)を参照してください。
+問題が解決しない場合は、より詳細なデバッグ手順について[トラブルシューティングドキュメント](/troubleshooting)を参照してください。

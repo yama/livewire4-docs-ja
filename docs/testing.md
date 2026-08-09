@@ -227,7 +227,7 @@ it('編集時にtitleフィールドが入力される', function () {
 
 ### URLパラメータを設定する
 
-コンポーネントが[LivewireのURL機能](https://livewire.laravel.com/docs/4.x/url)を使ってクエリ文字列で状態を追跡している場合、`withQueryParams()`でURLパラメータをシミュレートします。
+コンポーネントが[LivewireのURL機能](/url)を使ってクエリ文字列で状態を追跡している場合、`withQueryParams()`でURLパラメータをシミュレートします。
 
 ```php
 use App\Models\Post;

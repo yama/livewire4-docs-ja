@@ -146,7 +146,7 @@ Bladeテンプレートで、個別の子コンポーネントから直接イベ
 
 上のスニペットは、登録されたコンポーネントからの`post-created`をリッスンします。コンポーネントがページ上からなくなると、イベントリスナーも呼び出されなくなります。
 
-[Livewireコンポーネント内でJavaScriptを使う方法を詳しく読む →](https://livewire.laravel.com/docs/4.x/javascript#using-javascript-in-livewire-components)
+[Livewireコンポーネント内でJavaScriptを使う方法を詳しく読む →](/javascript#livewireコンポーネントでjavascriptを使う)
 
 ### コンポーネントスクリプトからイベントをディスパッチする
 
@@ -202,7 +202,7 @@ JavaScriptイベントリスナーからは、イベントの`detail`プロパ�
 </script>
 ```
 
-[Livewireコンポーネント内でJavaScriptを使う方法を詳しく読む →](https://livewire.laravel.com/docs/4.x/javascript#using-javascript-in-livewire-components)
+[Livewireコンポーネント内でJavaScriptを使う方法を詳しく読む →](/javascript#livewireコンポーネントでjavascriptを使う)
 
 ### グローバルJavaScriptからLivewireイベントをリッスンする
 
@@ -647,5 +647,5 @@ new class extends Component {
 
 - **[ネスト](/nesting)** — 親コンポーネントと子コンポーネント間で通信する
 - **[アクション](/actions)** — コンポーネントのアクションからイベントを発生させる
-- **[Alpine](https://livewire.laravel.com/docs/4.x/alpine)** — Alpineでイベントをディスパッチし、リッスンする
-- **[On Attribute](https://livewire.laravel.com/docs/4.x/attribute-on)** — `#[On]`属性でイベントをリッスンする
+- **[Alpine](/alpine)** — Alpineでイベントをディスパッチし、リッスンする
+- **[On Attribute](/attribute-on)** — `#[On]`属性でイベントをリッスンする

@@ -829,7 +829,16 @@ $wire.interceptMessage(({ message, cancel, onSend, onCancel, onSuccess, onSkippe
 
 #### 実行順
 
-成功時は`onSuccess`、`onSync`、`onEffect`、`onMorph`、`onFinish`、`onRender`（`requestAnimationFrame`後）の順です。スキップ時は`onSkipped`、続いて`onFinish`が実行され、morph・renderフックは実行されません。アクションPromiseは`onFinish`と同時にresolveします。
+成功したリクエストでは、フックは次の順序で実行されます。
+
+1. `onSuccess` — サーバーの応答直後
+2. `onSync` — 状態をマージした後
+3. `onEffect` — エフェクトを処理した後
+4. `onMorph` — DOMのmorph後
+5. `onFinish` — morph完了後
+6. `onRender` — `requestAnimationFrame`内（描画後）
+
+変更のないリアクティブな子など、メッセージがスキップされた場合は`onSuccess`の代わりに`onSkipped`が実行され、その後`onFinish`が実行されます。適用するmorphや描画がないため、morph・render系のフックは実行されません。アクションPromiseは`onFinish`と同時にresolveします。
 
 ### Request interceptor
 

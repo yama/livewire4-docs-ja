@@ -356,7 +356,7 @@ Livewireには、ページ上のどこにでもローディングインジケー
 </form>
 ```
 
-ほとんどの場合、`data-loading`セレクターのほうが`wire:loading`よりも簡単で柔軟です。[ローディング状態について詳しく学ぶ →](https://livewire.laravel.com/docs/4.x/loading-states)
+ほとんどの場合、`data-loading`セレクターのほうが`wire:loading`よりも簡単で柔軟です。[ローディング状態について詳しく学ぶ →](/loading-states)
 
 ## コンポーネントを更新する
 
@@ -378,7 +378,7 @@ Livewireコンポーネント内では、AlpineJSを使ってコンポーネン�
 <button type="button" x-on:click="$wire.$refresh()">...</button>
 ```
 
-[Livewire内でAlpineを使うドキュメント](https://livewire.laravel.com/docs/4.x/alpine)を読んで、さらに詳しく学んでください。
+[Livewire内でAlpineを使うドキュメント](/alpine)を読んで、さらに詳しく学んでください。
 
 ## アクションを確認する
 
@@ -398,7 +398,7 @@ Livewireでは、`wire:confirm`という単純なディレクティブで簡単�
 
 Livewireアクションを含む要素に`wire:confirm`を追加すると、ユーザーがそのアクションを実行しようとしたとき、指定したメッセージを含む確認ダイアログが表示されます。「OK」を押してアクションを確認するか、「キャンセル」を押すかEscapeキーを押します。
 
-詳しくは[`wire:confirm`のドキュメントページ](https://livewire.laravel.com/docs/4.x/wire-confirm)を参照してください。
+詳しくは[`wire:confirm`のドキュメントページ](/wire-confirm)を参照してください。
 
 ## Alpineからアクションを呼び出す
 
@@ -463,7 +463,7 @@ public function getPostCount()
 この例で`getPostCount()`メソッドが「10」を返すと、`<span>`タグにも「10」が入ります。
 
 > [!tip] JavaScriptから利用するアクションには#[Json]を使う
-> 主にJavaScriptから利用するアクションには、[`#[Json]`属性](https://livewire.laravel.com/docs/4.x/attribute-json)の使用を検討してください。Promiseの解決・拒否を通じてデータを返し、バリデーションエラーを自動的にPromiseの拒否として処理し、パフォーマンス向上のため再レンダリングを省略します。
+> 主にJavaScriptから利用するアクションには、[`#[Json]`属性](/attribute-json)の使用を検討してください。Promiseの解決・拒否を通じてデータを返し、バリデーションエラーを自動的にPromiseの拒否として処理し、パフォーマンス向上のため再レンダリングを省略します。
 
 Livewireを使うためにAlpineの知識は必要ありません。しかしAlpineは非常に強力なツールであり、Alpineを知ることでLivewireの体験と生産性が向上します。
 
@@ -655,7 +655,7 @@ Livewireには、カスタムメソッドを定義せずにコンポーネント
 
 ユーザーが上の入力欄で入力中にEnterキーを押すと、入力欄の内容がパラメータとして`search()`アクションに渡されます。
 
-> マジックアクションの詳細は[JavaScriptリファレンス](https://livewire.laravel.com/docs/4.x/javascript#the-wire-object-1)を参照してください。
+> マジックアクションの詳細は[JavaScriptリファレンス](/javascript#wireオブジェクト)を参照してください。
 
 ### Alpineからマジックアクションを使う
 
@@ -1200,6 +1200,6 @@ class CreatePost extends Component
 
 - **[イベント](/events)** — イベントを使ってコンポーネント間で通信する
 - **[フォーム](/forms)** — アクションでフォーム送信を処理する
-- **[ローディング状態](https://livewire.laravel.com/docs/4.x/loading-states)** — アクション処理中のフィードバックを表示する
-- **[wire:click](https://livewire.laravel.com/docs/4.x/wire-click)** — ボタンのクリックからアクションを呼び出す
-- **[バリデーション](https://livewire.laravel.com/docs/4.x/validation)** — アクション処理前にデータを検証する
+- **[ローディング状態](/loading-states)** — アクション処理中のフィードバックを表示する
+- **[wire:click](/wire-click)** — ボタンのクリックからアクションを呼び出す
+- **[バリデーション](/validation)** — アクション処理前にデータを検証する

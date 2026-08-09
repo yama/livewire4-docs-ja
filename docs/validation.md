@@ -439,5 +439,5 @@ Livewire v3の初期には、バリデーション属性に `Rule` という名�
 
 - **[フォーム](/forms)** — リアルタイムフィードバックで入力を検証する
 - **[プロパティ](/properties)** — 保存前にプロパティ値を検証する
-- **[Validate属性](https://livewire.laravel.com/docs/4.x/attribute-validate)** — プロパティのバリデーションに `#[Validate]` を使う
+- **[Validate属性](/attribute-validate)** — プロパティのバリデーションに `#[Validate]` を使う
 - **[アクション](/actions)** — アクションメソッドでデータを検証する

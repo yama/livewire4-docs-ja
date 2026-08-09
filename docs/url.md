@@ -245,5 +245,5 @@ trait WithSorting
 
 - **[プロパティ](/properties)** — プロパティをURLパラメータと同期する
 - **[ナビゲーション](/navigate)** — SPAナビゲーション中もURLの状態を維持する
-- **[Url属性](https://livewire.laravel.com/docs/4.x/attribute-url)** — プロパティをURLのクエリ文字列へバインドする
+- **[Url属性](/attribute-url)** — プロパティをURLのクエリ文字列へバインドする
 - **[ページ](/pages)** — ルートパラメータを扱う

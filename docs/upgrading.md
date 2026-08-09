@@ -82,7 +82,7 @@ php artisan optimize:clear
 
 深くネストしたコンポーネントでの`wire:key`に関する問題を防ぎやすくなります。ループ内では引き続き`wire:key`を手動で追加する必要があります。
 
-[wire:keyの詳細](https://livewire.laravel.com/docs/4.x/nesting#rendering-children-in-a-loop)
+[wire:keyの詳細](/nesting#ループ内で子コンポーネントを描画する)
 
 #### 新しい設定オプション
 
@@ -144,7 +144,7 @@ Route::livewire('/dashboard', 'pages::dashboard');
 
 `Route::livewire()`が推奨される方法になり、シングルファイルおよびマルチファイルコンポーネントをフルページとして動作させるには必須です。
 
-[ルーティングの詳細](https://livewire.laravel.com/docs/4.x/components#page-components)
+[ルーティングの詳細](/components#ページコンポーネント)
 
 ### `wire:model`はデフォルトで子要素のイベントを無視する
 
@@ -191,7 +191,7 @@ v3では、Livewireコンポーネントタグを正しく閉じなくても描�
 <livewire:component-name />
 ```
 
-[コンポーネントの描画](https://livewire.laravel.com/docs/4.x/components#rendering-components)と[スロット](https://livewire.laravel.com/docs/4.x/nesting#slots)を参照してください。
+[コンポーネントの描画](/components#コンポーネントを描画する)と[スロット](/nesting#スロット)を参照してください。
 
 ## 影響が中程度の変更
 
@@ -231,7 +231,7 @@ v4では、ネットワークリクエストを送らずにクライアント側
 <input wire:model.blur.enter="search">
 ```
 
-[wire:modelの詳細](https://livewire.laravel.com/docs/4.x/wire-model)
+[wire:modelの詳細](/wire-model)
 
 ### `wire:transition`がView Transitions APIを使うようになった
 
@@ -249,7 +249,7 @@ v4ではブラウザー標準の[View Transitions API](https://developer.mozilla
 <div wire:transition.duration.500ms>...</div>
 ```
 
-[wire:transitionの詳細](https://livewire.laravel.com/docs/4.x/wire-transition)
+[wire:transitionの詳細](/wire-transition)
 
 ### パフォーマンスの改善
 
@@ -320,7 +320,7 @@ public function mount($name, $params = [], $key = null, $slots = [])
 
 `wire:model`内の角括弧がプロパティアクセサーとして解釈されます。プロパティキーに角括弧を含めている場合は、競合を避けるため名前を変更してください。
 
-[ネストしたプロパティへのアクセス](https://livewire.laravel.com/docs/4.x/wire-model#accessing-nested-properties)
+[ネストしたプロパティへのアクセス](/wire-model#ネストしたプロパティへアクセスする)
 
 ### LivewireのアセットとエンドポイントURLの変更
 
@@ -378,6 +378,9 @@ $wire.$js.bookmark = () => {
 
 `commit`と`request`フックは、より細かな制御と高いパフォーマンスを提供するインターセプターシステムに置き換えられ、非推奨になりました。既存のフックは引き続き動作します。
 
+> [!tip] 古いフックも動作します
+> 非推奨のフックは後方互換性のためv4でも動作しますが、都合のよいタイミングで新しいシステムへ移行してください。
+
 新しいAPIでは、次のように`interceptMessage`と`interceptRequest`を使います。
 
 ```js
@@ -396,7 +399,65 @@ Livewire.interceptRequest(({ request, onResponse, onSuccess, onError, onFailure 
 })
 ```
 
-新しいシステムでは、ネットワーク障害とサーバーエラーを分離したエラー処理、`onSync`・`onMorph`・`onRender`などのライフサイクルフック、キャンセル、コンポーネント単位のスコープが利用できます。詳しくは[JavaScriptインターセプター](https://livewire.laravel.com/docs/4.x/javascript#interceptors)を参照してください。
+新しいシステムでは、ネットワーク障害とサーバーエラーを分離したエラー処理、`onSync`・`onMorph`・`onRender`などのライフサイクルフック、キャンセル、コンポーネント単位のスコープが利用できます。詳しくは[JavaScriptインターセプター](/javascript#interceptor)を参照してください。
+
+#### `commit`フックから移行する
+
+旧`commit`フックでは、応答後の処理、成功時、失敗時をそれぞれ`respond()`、`succeed()`、`fail()`で処理していました。v4では、メッセージ単位のインターセプターへ移行します。
+
+```js
+// 旧API（非推奨）
+Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
+    respond(() => {})
+    succeed(({ snapshot, effects }) => {})
+    fail(() => {})
+})
+
+// 新API（推奨）
+Livewire.interceptMessage(({ component, message, onFinish, onSuccess, onError, onFailure }) => {
+    onFinish(() => {
+        // respond()に相当
+    })
+    onSuccess(({ payload }) => {
+        // succeed()に相当。スナップショットはpayload.snapshotから取得
+    })
+    onError(() => {
+        // サーバーエラー時のfail()に相当
+    })
+    onFailure(() => {
+        // ネットワークエラー時のfail()に相当
+    })
+})
+```
+
+#### `request`フックから移行する
+
+旧`request`フックは、レスポンスを受け取ったとき、成功したとき、失敗したときにコールバックを実行していました。v4では`interceptRequest`を使用します。
+
+```js
+// 旧API（非推奨）
+Livewire.hook('request', ({ url, options, payload, respond, succeed, fail }) => {
+    respond(({ status, response }) => {})
+    succeed(({ status, json }) => {})
+    fail(({ status, content, preventDefault }) => {})
+})
+
+// 新API（推奨）
+Livewire.interceptRequest(({ request, onResponse, onSuccess, onError, onFailure }) => {
+    // URLはrequest.uri、オプションはrequest.options、ペイロードはrequest.payload
+    onResponse(({ response }) => {})
+    onSuccess(({ response, responseJson }) => {})
+    onError(({ response, responseBody, preventDefault }) => {})
+    onFailure(({ error }) => {})
+})
+```
+
+#### 主な違い
+
+1. **より細かなエラー処理:** `onFailure`でネットワーク障害を、`onError`でサーバーエラーを分けて処理できます。
+2. **ライフサイクルフックの強化:** `onSync`、`onMorph`、`onRender`などのフックを利用できます。
+3. **キャンセルのサポート:** メッセージとリクエストの両方をキャンセル・中断できます。
+4. **コンポーネント単位のスコープ:** `$wire.intercept(...)`を使って特定コンポーネントへ適用できます。
 
 ## Voltからのアップグレード
 
@@ -466,7 +527,217 @@ composer remove livewire/volt
 
 v4では、すぐに使い始められる機能が追加されています。シングルファイル・マルチファイルコンポーネント、スロットと属性転送、Islands、遅延・延期読み込み、非同期アクション、`wire:sort`、`wire:intersect`、`wire:ref`、`.renderless`、`.preserve-scroll`、`data-loading`属性、JavaScriptの`$errors`や`$intercept`などです。
 
-詳細とサンプルは、対応する[コンポーネント](https://livewire.laravel.com/docs/4.x/components)、[Islands](https://livewire.laravel.com/docs/4.x/islands)、[遅延読み込み](https://livewire.laravel.com/docs/4.x/lazy)、[アクション](https://livewire.laravel.com/docs/4.x/actions)、[ディレクティブ](https://livewire.laravel.com/docs/4.x/wire-sort)、[ローディング状態](https://livewire.laravel.com/docs/4.x/loading-states)、[JavaScript](https://livewire.laravel.com/docs/4.x/javascript)のドキュメントを参照してください。
+詳細とサンプルは、対応する[コンポーネント](/components)、[Islands](/islands)、[遅延読み込み](/lazy)、[アクション](/actions)、[ディレクティブ](/wire-sort)、[ローディング状態](/loading-states)、[JavaScript](/javascript)のドキュメントを参照してください。
+
+### コンポーネントの機能
+
+v4では、従来のクラスベース方式に加えてシングルファイルとマルチファイルのコンポーネントを使えます。シングルファイルではPHPとBladeを1ファイルにまとめ、マルチファイルではPHP、Blade、JavaScript、テストをディレクトリに整理します。
+
+デフォルトでは、ビュー形式のコンポーネントのファイル名に⚡絵文字が付きます。`make_command.emoji`設定で無効にできます。
+
+```bash
+php artisan make:livewire create-post        # シングルファイル（デフォルト）
+php artisan make:livewire create-post --mfc  # マルチファイル
+php artisan livewire:convert create-post     # 形式を変換
+```
+
+詳しくは[コンポーネントのドキュメント](/components)を参照してください。
+
+コンポーネントはスロットと`{{ $attributes }}`による属性バッグの自動転送にも対応し、コンポーネントを柔軟に組み合わせられます。ビュー形式のコンポーネントでは、`@script`でラップしなくても`<script>`タグを含められます。
+
+```blade
+<div>
+    <!-- コンポーネントのテンプレート -->
+</div>
+
+<script>
+    // $wireは'this'として自動的にバインドされる
+    this.count++  // $wire.count++と同じ
+
+    // 必要なら$wireも使える
+    $wire.save()
+</script>
+```
+
+詳しくは[JavaScriptのドキュメント](/javascript)を参照してください。
+
+### Islands
+
+Islandsを使うと、独立した子コンポーネントを作らずに、コンポーネント内の領域を独立して更新できます。
+
+```blade
+@island(name: 'stats', lazy: true)
+    <div>{{ $this->expensiveStats }}</div>
+@endisland
+```
+
+詳しくは[Islandsのドキュメント](/islands)を参照してください。
+
+### ローディングの改善
+
+遅延読み込み（ビューポート基準）に加えて、初回ページ読み込み直後にコンポーネントを延期読み込みできます。
+
+```blade
+<livewire:revenue defer />
+```
+
+```php
+#[Defer]
+class Revenue extends Component { ... }
+```
+
+複数の遅延・延期コンポーネントを並列または束ねて読み込むかも制御できます。
+
+```blade
+<livewire:revenue lazy.bundle />
+<livewire:expenses defer.bundle />
+```
+
+```php
+#[Lazy(bundle: true)]
+class Revenue extends Component { ... }
+```
+
+詳しくは[遅延読み込みと延期読み込みのドキュメント](/lazy)を参照してください。
+
+### 非同期アクション
+
+`.async`修飾子または`#[Async]`属性を使うと、他のリクエストをブロックせずにアクションを並列実行できます。
+
+```blade
+<button wire:click.async="logActivity">記録</button>
+```
+
+```php
+#[Async]
+public function logActivity() { ... }
+```
+
+詳しくは[アクションの非同期実行](/actions#asyncによる並列実行)を参照してください。
+
+### 新しいディレクティブと修飾子
+
+**`wire:sort` — ドラッグ＆ドロップによる並べ替え**
+
+```blade
+<ul wire:sort="updateOrder">
+    @foreach ($items as $item)
+        <li wire:sort:item="{{ $item->id }}" wire:key="{{ $item->id }}">{{ $item->name }}</li>
+    @endforeach
+</ul>
+```
+
+詳しくは[wire:sortのドキュメント](/wire-sort)を参照してください。
+
+**`wire:intersect` — ビューポートとの交差**
+
+要素がビューポートへ入ったとき、または出たときにアクションを実行できます。
+
+```blade
+<div wire:intersect="loadMore">...</div>
+<div wire:intersect.once="trackView">...</div>
+<div wire:intersect:leave="pauseVideo">...</div>
+<div wire:intersect.half="loadMore">...</div>
+<div wire:intersect.full="startAnimation">...</div>
+<div wire:intersect.margin.200px="loadMore">...</div>
+<div wire:intersect.threshold.50="trackScroll">...</div>
+```
+
+利用できる修飾子は次のとおりです。
+
+- `.once` — 1回だけ実行する
+- `.half` — 半分見えるまで待つ
+- `.full` — 完全に見えるまで待つ
+- `.threshold.X` — 表示割合を0〜100で指定する
+- `.margin.Xpx`または`.margin.X%` — 交差判定のマージンを指定する
+
+詳しくは[wire:intersectのドキュメント](/wire-intersect)を参照してください。
+
+**`wire:ref` — 要素への参照**
+
+```blade
+<div wire:ref="modal">
+    <!-- モーダルの内容 -->
+</div>
+
+<button wire:click="$js.scrollToModal">モーダルへスクロール</button>
+
+<script>
+    this.$js.scrollToModal = () => {
+        this.$refs.modal.scrollIntoView()
+    }
+</script>
+```
+
+**`.renderless`修飾子**
+
+テンプレートからコンポーネントの再描画をスキップできます。
+
+```blade
+<button wire:click.renderless="trackClick">記録</button>
+```
+
+UIを更新しないアクションで使う`#[Renderless]`属性の代替手段です。
+
+**`.preserve-scroll`修飾子**
+
+更新中のスクロール位置を保持して、レイアウトのずれを防ぎます。
+
+```blade
+<button wire:click.preserve-scroll="loadMore">さらに読み込む</button>
+```
+
+**`data-loading`属性**
+
+ネットワークリクエストを発生させる要素には`data-loading`属性が自動的に付き、Tailwindでローディング状態を簡単にスタイルできます。
+
+```blade
+<button wire:click="save" class="data-loading:opacity-50 data-loading:pointer-events-none">
+    変更を保存
+</button>
+```
+
+詳しくは[ローディング状態のドキュメント](/loading-states)を参照してください。
+
+### JavaScriptの改善
+
+**`$errors`マジックプロパティ**
+
+JavaScriptからコンポーネントのエラーバッグへアクセスできます。
+
+```blade
+<div wire:show="$errors.has('email')">
+    <span wire:text="$errors.first('email')"></span>
+</div>
+```
+
+詳しくは[バリデーションのドキュメント](/validation)を参照してください。
+
+**`$intercept`マジック**
+
+JavaScriptからLivewireリクエストを捕捉して変更できます。
+
+```blade
+<script>
+this.$intercept('save', ({ ... }) => {
+    // ...
+})
+</script>
+```
+
+詳しくは[JavaScriptインターセプターのドキュメント](/javascript#interceptor)を参照してください。
+
+**JavaScriptからIslandを対象にする**
+
+テンプレートからIslandの描画を直接発生させられます。
+
+```blade
+<button wire:click="loadMore" wire:island.append="stats">
+    さらに読み込む
+</button>
+```
+
+詳しくは[Islandsのドキュメント](/islands)を参照してください。
 
 ## ヘルプを得る
 

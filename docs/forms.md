@@ -104,7 +104,7 @@ Bladeテンプレートも変更して、ページ上にバリデーションエ
 
 これで、ユーザーがどのフィールドにも入力せずフォームを送信しようとすると、投稿を保存する前に、どのフィールドが必須なのかを示すバリデーションメッセージが表示されます。
 
-Livewireには、さらに多くのバリデーション機能があります。詳しくは、[バリデーション専用のドキュメントページ](https://livewire.laravel.com/docs/4.x/validation)を参照してください。
+Livewireには、さらに多くのバリデーション機能があります。詳しくは、[バリデーション専用のドキュメントページ](/validation)を参照してください。
 
 ### フォームオブジェクトを取り出す
 
@@ -487,7 +487,7 @@ class PostForm extends Form
 }
 ```
 
-これでフォーム送信前に`$title`プロパティが更新されると（[`wire:model.live.blur`](https://livewire.laravel.com/docs/4.x/wire-model#updating-on-blur-event)を使う場合など）、`$title`のバリデーションが実行されます。
+これでフォーム送信前に`$title`プロパティが更新されると（[`wire:model.live.blur`](/wire-model#「blur」イベントで更新する)を使う場合など）、`$title`のバリデーションが実行されます。
 
 ### ローディングインジケーターを表示する
 
@@ -518,7 +518,7 @@ class PostForm extends Form
 </button>
 ```
 
-[ローディング状態について詳しく学ぶ →](https://livewire.laravel.com/docs/4.x/loading-states)
+[ローディング状態について詳しく学ぶ →](/loading-states)
 
 ## フィールドをリアルタイムで更新する
 
@@ -565,7 +565,7 @@ public $title = '';
 
 ユーザーが「タイトル」入力欄に3文字だけ入力し、フォームの次の入力欄をクリックすると、そのフィールドには5文字以上必要だというバリデーションメッセージが表示されます。
 
-詳しくは、[バリデーションのドキュメントページ](https://livewire.laravel.com/docs/4.x/validation)を参照してください。
+詳しくは、[バリデーションのドキュメントページ](/validation)を参照してください。
 
 ## フォームをリアルタイムで保存する
 
@@ -805,8 +805,8 @@ Bladeコンポーネントを作る前に、参考として純粋なAlpineの「
 
 ## 関連項目
 
-- **[バリデーション](https://livewire.laravel.com/docs/4.x/validation)** — リアルタイムのフィードバックでフォーム入力を検証する
-- **[wire:model](https://livewire.laravel.com/docs/4.x/wire-model)** — フォーム入力をコンポーネントのプロパティにバインドする
-- **[ファイルアップロード](https://livewire.laravel.com/docs/4.x/uploads)** — フォームでファイルアップロードを処理する
+- **[バリデーション](/validation)** — リアルタイムのフィードバックでフォーム入力を検証する
+- **[wire:model](/wire-model)** — フォーム入力をコンポーネントのプロパティにバインドする
+- **[ファイルアップロード](/uploads)** — フォームでファイルアップロードを処理する
 - **[アクション](/actions)** — アクションでフォーム送信を処理する
-- **[ローディング状態](https://livewire.laravel.com/docs/4.x/loading-states)** — フォーム送信中にローディングインジケーターを表示する
+- **[ローディング状態](/loading-states)** — フォーム送信中にローディングインジケーターを表示する

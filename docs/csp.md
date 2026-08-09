@@ -132,7 +132,11 @@ Content-Security-Policy: default-src 'self';
                         style-src 'self' 'unsafe-inline';
 ```
 
-要点は、`script-src`から`'unsafe-eval'`を削除し、`'nonce-[random]'`によるnonceベースのスクリプト読み込みを使い、互換性向上のため`'strict-dynamic'`を検討することです。
+要点は次のとおりです。
+
+- `script-src`から`'unsafe-eval'`を削除する
+- `'nonce-[random]'`によるnonceベースのスクリプト読み込みを使う
+- 動的に読み込まれるスクリプトとの互換性向上のため`'strict-dynamic'`を検討する
 
 ## パフォーマンス上の注意
 

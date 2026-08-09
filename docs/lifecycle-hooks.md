@@ -112,12 +112,12 @@ new class extends Component {
 この方法を使うと、コンポーネントプロパティの初期化を完全に制御できます。
 
 > [!tip] 多くの場合は算出プロパティを使えます
-> 上記の方法は強力ですが、この用途には[Livewireの算出プロパティ](https://livewire.laravel.com/docs/4.x/computed-properties)を使う方が適していることがよくあります。
+> 上記の方法は強力ですが、この用途には[Livewireの算出プロパティ](/computed-properties)を使う方が適していることがよくあります。
 
 > [!warning] 機密性のあるpublicプロパティは必ずロックする
 > 上の例では`$postId`に`#[Locked]`属性を使っています。クライアント側でユーザーが値を改ざんできないようにする場合は、利用前に値を認可するか、プロパティに`#[Locked]`を追加して変更できないようにしてください。
 >
-> 詳しくは[Locked属性のドキュメント](https://livewire.laravel.com/docs/4.x/attribute-locked)を参照してください。
+> 詳しくは[Locked属性のドキュメント](/attribute-locked)を参照してください。
 
 ## Update
 
@@ -127,7 +127,7 @@ Livewireには、publicプロパティの更新を受け止める便利なフッ
 
 次の例では、`updating()`を使って`$postId`プロパティの変更を防ぎます。
 
-なお、この例のような実際のアプリケーションでは、上の例と同じように[`#[Locked]`属性](https://livewire.laravel.com/docs/4.x/attribute-locked)を使うべきです。
+なお、この例のような実際のアプリケーションでは、上の例と同じように[`#[Locked]`属性](/attribute-locked)を使うべきです。
 
 ```php
 <?php // resources/views/components/post/⚡show.blade.php
@@ -232,7 +232,7 @@ HydrateとDehydrateは、あまり知られておらず、使われる機会も�
 
 「dehydrate」と「hydrate」という用語は、Livewireコンポーネントをクライアント側向けのJSONにシリアライズし、次のリクエストでPHPオブジェクトに戻す処理を指します。
 
-Livewireのコードベースとドキュメントでは、この処理を指すために「hydrate」と「dehydrate」という用語をよく使います。これらの用語をより明確に理解したい場合は、[Hydrationのドキュメント](https://livewire.laravel.com/docs/4.x/hydration)を参照してください。
+Livewireのコードベースとドキュメントでは、この処理を指すために「hydrate」と「dehydrate」という用語をよく使います。これらの用語をより明確に理解したい場合は、[Hydrationのドキュメント](/hydration)を参照してください。
 
 Eloquentモデルの代わりにカスタムの[データ転送オブジェクト（DTO）](https://en.wikipedia.org/wiki/Data_transfer_object)を使ってコンポーネントに投稿データを保存するため、`mount()`、`hydrate()`、`dehydrate()`をすべて一緒に使う例を見てみましょう。
 
@@ -489,4 +489,4 @@ class PostForm extends Form
 - **[プロパティ](/properties)** — `mount()`と`boot()`でプロパティを初期化する
 - **[コンポーネント](/components)** — コンポーネント作成時にフックが実行されるタイミングを理解する
 - **[ページ](/pages)** — `mount()`でルートパラメータを受け取る
-- **[Hydration](https://livewire.laravel.com/docs/4.x/hydration)** — `hydrate()`と`dehydrate()`フックを理解する
+- **[Hydration](/hydration)** — `hydrate()`と`dehydrate()`フックを理解する

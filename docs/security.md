@@ -58,7 +58,10 @@ public function delete($id)
 }
 ```
 
-詳しくは[Laravel Gates](https://laravel.com/docs/authorization#gates)と[Laravel Policies](https://laravel.com/docs/authorization#creating-policies)を参照してください。
+詳しくは次を参照してください。
+
+* [Laravel Gates](https://laravel.com/docs/authorization#gates)
+* [Laravel Policies](https://laravel.com/docs/authorization#creating-policies)
 
 ## publicプロパティを認可する
 
@@ -85,7 +88,9 @@ class ShowPost extends Component
 <button wire:click="delete">投稿を削除</button>
 ```
 
-悪意のあるユーザーは`<input type="text" wire:model="postId">`をページへ注入し、削除前に`$postId`を変更できます。対策は次の3つです。
+悪意のあるユーザーは`<input type="text" wire:model="postId">`をページへ注入し、削除前に`$postId`を変更できます。`delete`アクションが値を認可していないため、所有していない投稿も削除できてしまいます。
+
+このリスクを防ぐ方法は、モデルをプロパティとして保持する、プロパティをロックする、アクション内でプロパティを認可する、の3つです。
 
 ```html
 <input type="text" wire:model="postId">
@@ -158,9 +163,12 @@ class ShowPost extends Component
 <button wire:click="delete">投稿を削除</button>
 ```
 
-値が改ざんされても、所有者でなければ`$this->authorize()`が`AuthorizationException`を投げます。
+値が改ざんされても、所有者でなければ`$this->authorize()`が`AuthorizationException`を投げます。つまり、ユーザーが`$postId`を自由に変更できる点は変わりませんが、削除処理を認可なしで実行できない点が重要です。
 
-詳しくは[Laravel Gates](https://laravel.com/docs/authorization#gates)と[Laravel Policies](https://laravel.com/docs/authorization#creating-policies)を参照してください。
+詳しくは次を参照してください。
+
+* [Laravel Gates](https://laravel.com/docs/authorization#gates)
+* [Laravel Policies](https://laravel.com/docs/authorization#creating-policies)
 
 ## Middleware
 
@@ -172,6 +180,14 @@ Route::livewire('/post/{post}', App\Livewire\UpdatePost::class)
 ```
 
 初回読み込み後に権限が失われても、元のエンドポイントの認可ルールが再適用されるため更新は保護されます。
+
+たとえば、次の順序で権限が変わる場合を考えます。
+
+* ユーザーがページを読み込む
+* ページの読み込み後に更新権限を失う
+* 権限を失った後に投稿の更新を試みる
+
+ページの読み込みはすでに成功しているため、後続のLivewireリクエストでも`can:update,post`が再適用されるのか、認可されていないユーザーが更新できるのかが問題になります。Livewireは元のエンドポイントに設定されたMiddlewareを再適用するため、この場合も更新は保護されます。
 
 ```php
 Route::livewire('/post/{post}', App\Livewire\UpdatePost::class)

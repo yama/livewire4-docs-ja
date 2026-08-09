@@ -46,7 +46,7 @@ Livewireは、現在のページURLに一致する`wire:navigate`リンクへ`da
 
 - **[Navigate](/navigate)** — SPAナビゲーションの完全ガイド
 - **[ページ](/pages)** — ルーティング可能なページコンポーネントを作成する
-- **[@persist](https://livewire.laravel.com/docs/4.x/directive-persist)** — ナビゲーション中も要素を保持する
+- **[@persist](/directive-persist)** — ナビゲーション中も要素を保持する
 
 ## リファレンス
 

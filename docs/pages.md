@@ -242,7 +242,7 @@ new class extends Component {
 ## 関連項目
 
 - **[コンポーネント](/components)** — コンポーネントの作成と整理
-- **[Navigate](https://livewire.laravel.com/docs/4.x/navigate)** — SPAのようなページ間ナビゲーション
-- **[リダイレクト](https://livewire.laravel.com/docs/4.x/redirecting)** — フォーム送信やアクション後のリダイレクト
-- **[Layout Attribute](https://livewire.laravel.com/docs/4.x/attribute-layout)** — フルページコンポーネントのレイアウト指定
-- **[Title Attribute](https://livewire.laravel.com/docs/4.x/attribute-title)** — ページタイトルの動的設定
+- **[Navigate](/navigate)** — SPAのようなページ間ナビゲーション
+- **[リダイレクト](/redirecting)** — フォーム送信やアクション後のリダイレクト
+- **[Layout Attribute](/attribute-layout)** — フルページコンポーネントのレイアウト指定
+- **[Title Attribute](/attribute-title)** — ページタイトルの動的設定

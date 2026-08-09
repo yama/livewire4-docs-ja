@@ -133,5 +133,5 @@ new class extends Component {
 
 LivewireのJavaScript統合については、次を参照してください。
 
-* [JavaScriptのドキュメント](https://livewire.laravel.com/docs/4.x/javascript)
+* [JavaScriptのドキュメント](/javascript)
 * [JavaScriptアクションのドキュメント](/actions#javascript-actions)

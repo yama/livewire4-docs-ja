@@ -309,5 +309,5 @@ Livewire.start()
 
 - **[プロパティ](/properties)** — `$wire` を使ってAlpineからLivewireのプロパティへアクセスする
 - **[アクション](/actions)** — AlpineからLivewireのアクションを呼び出す
-- **[JavaScript](https://livewire.laravel.com/docs/4.x/javascript)** — コンポーネントで独自JavaScriptを実行する
+- **[JavaScript](/javascript)** — コンポーネントで独自JavaScriptを実行する
 - **[イベント](/events)** — Alpineでイベントをディスパッチし、リッスンする
