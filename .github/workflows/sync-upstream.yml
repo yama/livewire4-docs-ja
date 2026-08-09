@@ -1,4 +1,4 @@
-name: Sync upstream Quickstart
+name: Sync upstream documentation
 
 on:
   schedule:
@@ -16,28 +16,36 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
-      - name: Fetch upstream Quickstart
+      - name: Fetch upstream documentation
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p upstream/docs
+          nav_file=$(mktemp)
+          trap 'rm -f "$nav_file"' EXIT
           curl --fail --silent --show-error --location \
-            https://raw.githubusercontent.com/livewire/livewire/4.x/docs/quickstart.md \
-            --output upstream/docs/quickstart.md.new
-          if cmp --silent upstream/docs/quickstart.md.new upstream/docs/quickstart.md 2>/dev/null; then
-            rm upstream/docs/quickstart.md.new
-          else
-            mv upstream/docs/quickstart.md.new upstream/docs/quickstart.md
-          fi
+            https://raw.githubusercontent.com/livewire/livewire/4.x/docs/__nav.md \
+            --output "$nav_file"
+          cp "$nav_file" upstream/docs/__nav.md
+          sed -n 's/.*file: \/\([^} ]*\).*/\1/p' "$nav_file" | while read -r file; do
+            curl --fail --silent --show-error --location \
+              "https://raw.githubusercontent.com/livewire/livewire/4.x/docs/$file" \
+              --output "upstream/docs/$file.new"
+            if cmp --silent "upstream/docs/$file.new" "upstream/docs/$file" 2>/dev/null; then
+              rm "upstream/docs/$file.new"
+            else
+              mv "upstream/docs/$file.new" "upstream/docs/$file"
+            fi
+          done
 
       - name: Create pull request when upstream changed
         uses: peter-evans/create-pull-request@v8
         with:
-          branch: chore/sync-upstream-quickstart
+          branch: chore/sync-upstream-docs
           delete-branch: true
-          commit-message: 'chore: upstream Quickstartを同期'
-          title: 'chore: upstream Quickstartを同期'
+          commit-message: 'chore: upstreamドキュメントを同期'
+          title: 'chore: upstreamドキュメントを同期'
           body: |
-            `livewire/livewire` の `4.x` ブランチから `docs/quickstart.md` を同期しました。
+            `livewire/livewire` の `4.x` ブランチから、`docs/__nav.md` に掲載されたドキュメントを同期しました。
 
             このPRではupstream原文だけを更新します。日本語訳の反映後に `.upstream-version` を更新してください。
