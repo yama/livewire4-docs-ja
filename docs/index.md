@@ -24,6 +24,6 @@ features:
 
 このサイトは、[Livewire 4公式ドキュメント](https://livewire.laravel.com/docs/4.x/quickstart)をもとにした非公式日本語版です。
 
-MVPでは、まず[Quickstart](/quickstart)を公開しています。
+Livewire 4.x公式ドキュメント全編を日本語化しています。
 
 Livewire公式プロジェクトおよびLaravelプロジェクトとは独立した翻訳プロジェクトです。
