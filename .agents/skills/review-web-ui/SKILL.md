@@ -28,7 +28,7 @@ description: WebページをPlaywrightでdesktop/mobile確認し、DOM・CSS・s
 ## 観測手順
 
 1. 対象URL、ページ目的、想定ユーザー、主要な行動を確認する。分からない場合は、ページ内容から仮説を置き、仮説であると明記する。
-2. **Playwrightを必ずヘッドレスで実行する。** desktop（1440×900程度）とmobile（390×844程度）の両方をレンダリングし、各viewportのfull-pageスクリーンショットを保存する。通常は `node .agents/skills/review-web-ui/scripts/capture-web-ui.mjs <URL> <出力ディレクトリ>` を使う。Playwrightまたはブラウザが未導入なら、レビューを完了扱いにせず、導入方法を示して停止する。
+2. **Playwrightを必ずヘッドレスで実行する。** desktop（1440×900程度）とmobile（390×844程度）の両方をレンダリングし、各viewportのfull-pageスクリーンショットを保存する。通常は `node .agents/skills/review-web-ui/scripts/capture-web-ui.mjs <URL> <出力ルート> <run-label>` を使い、`before` と `after` のように別ラベルで保存して比較可能にする。同じ出力先を再利用して既存artifactを上書きしない。localhostを確認するときだけ `ALLOW_LOCALHOST_REVIEW=1` を明示する。Playwrightまたはブラウザが未導入なら、レビューを完了扱いにせず、導入方法を示して停止する。
 3. スクリーンショットを目視し、視線、余白、整列、折返し、表示順、密度、装飾、操作対象を確認する。desktopとmobileで同じ問題が再現するか、viewport固有の問題かを分ける。
 4. 同じPlaywrightセッションまたは取得JSONからDOM、見出し階層、繰り返しコンポーネント、文章量、リンク・ボタンの役割、bounding box、computed styleを確認する。
 5. **スクリーンショットからの視覚判断と、DOM/CSSから確認した事実を分けて記録し、最後に組み合わせる。** 視覚判断だけで数値を推測せず、DOM/CSSだけで「見た目」を断定しない。

@@ -1,16 +1,67 @@
 import { chromium } from 'playwright';
+import { lookup } from 'node:dns/promises';
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { isIP } from 'node:net';
 import { join, resolve } from 'node:path';
 
-const [, , url, outputArg = '/tmp/web-ui-review'] = process.argv;
+const [, , url, outputArg = '/tmp/web-ui-review', runLabel] = process.argv;
 
 if (!url) {
-  console.error('Usage: node capture-web-ui.mjs <URL> [output-directory]');
+  console.error('Usage: node capture-web-ui.mjs <URL> [output-directory] [run-label]');
   process.exit(1);
 }
 
-const outputDir = resolve(outputArg);
+const initialUrl = new URL(url);
+const allowLocalhost = process.env.ALLOW_LOCALHOST_REVIEW === '1';
+const outputDir = resolve(outputArg, runLabel ?? '.');
 mkdirSync(outputDir, { recursive: true });
+
+const isPrivateIp = (address) => {
+  if (isIP(address) === 4) {
+    const [a, b] = address.split('.').map(Number);
+    return a === 0 || a === 10 || a === 127 || a === 169 && b === 254 ||
+      a === 172 && b >= 16 && b <= 31 || a === 192 && b === 168 ||
+      a === 100 && b >= 64 && b <= 127 || a === 192 && b === 0 ||
+      a === 198 && (b === 18 || b === 19 || b === 51) ||
+      a === 203 && b === 0;
+  }
+  return isIP(address) === 6 && (
+    address === '::1' || address.startsWith('fc') || address.startsWith('fd') ||
+    address.startsWith('fe8') || address.startsWith('fe9') || address.startsWith('fea') || address.startsWith('feb')
+  );
+};
+
+const isLocalHostname = (hostname) => hostname === 'localhost' || hostname.endsWith('.localhost') ||
+  hostname === '127.0.0.1' || hostname === '::1' || hostname === '[::1]';
+
+const hostIsAllowed = async (hostname) => {
+  if (isLocalHostname(hostname)) return allowLocalhost;
+  if (isIP(hostname)) return !isPrivateIp(hostname);
+  try {
+    const addresses = await lookup(hostname, { all: true });
+    return addresses.length > 0 && addresses.every(({ address }) => !isPrivateIp(address));
+  } catch {
+    return false;
+  }
+};
+
+const urlIsAllowed = async (candidate) => {
+  let parsed;
+  try {
+    parsed = new URL(candidate);
+  } catch {
+    return false;
+  }
+  if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false;
+  return hostIsAllowed(parsed.hostname);
+};
+
+if (!['http:', 'https:'].includes(initialUrl.protocol)) {
+  throw new Error('Only http:// and https:// URLs are allowed.');
+}
+if (!(await urlIsAllowed(initialUrl.href))) {
+  throw new Error('The target URL is not allowed. Public http(s) URLs are allowed; localhost requires ALLOW_LOCALHOST_REVIEW=1.');
+}
 
 const viewports = [
   { name: 'desktop', width: 1440, height: 900 },
@@ -19,11 +70,27 @@ const viewports = [
 
 const browser = await chromium.launch({ headless: true });
 const results = [];
+const hostCache = new Map();
 
 try {
   for (const viewport of viewports) {
-    const page = await browser.newPage({ viewport });
-    await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
+    const context = await browser.newContext({ viewport });
+    await context.route('**/*', async (route) => {
+      const requestUrl = route.request().url();
+      const parsed = new URL(requestUrl);
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+        await route.abort();
+        return;
+      }
+      const cached = hostCache.get(parsed.hostname);
+      const allowed = cached ?? await hostIsAllowed(parsed.hostname);
+      hostCache.set(parsed.hostname, allowed);
+      if (allowed) await route.continue();
+      else await route.abort();
+    });
+    const page = await context.newPage();
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.waitForTimeout(500);
     await page.screenshot({
       path: join(outputDir, `${viewport.name}.png`),
       fullPage: true,
@@ -70,13 +137,18 @@ try {
 
       const paragraphs = [...document.querySelectorAll('.vp-doc p')].filter(visible).map((element) => {
         const box = element.getBoundingClientRect();
-        return { text: element.textContent?.trim().replace(/\s+/g, ' ').slice(0, 160), box: { y: Math.round(box.y), height: Math.round(box.height) } };
+        return { element, text: element.textContent?.trim().replace(/\s+/g, ' ').slice(0, 160), box: { y: Math.round(box.y), height: Math.round(box.height) } };
       });
-      const paragraphGaps = paragraphs.slice(1).map((current, index) => ({
-        from: index,
-        to: index + 1,
-        gap: current.box.y - (paragraphs[index].box.y + paragraphs[index].box.height),
-      }));
+      const paragraphGaps = paragraphs.slice(1).flatMap((current, index) => {
+        const previous = paragraphs[index];
+        if (current.element.previousElementSibling !== previous.element) return [];
+        return [{
+          from: index,
+          to: index + 1,
+          gap: current.box.y - (previous.box.y + previous.box.height),
+          adjacent: true,
+        }];
+      });
 
       const typeSelectors = 'h1,h2,h3,h4,h5,h6,p,a,button,.VPHero .name,.VPHero .text,.VPHero .tagline';
       const typography = [...document.querySelectorAll(typeSelectors)].filter(visible).map((element) => {
@@ -104,7 +176,7 @@ try {
         'article', '.VPFeatures .box', 'p', 'button', 'a', '[class*="card"]', '[class*="feature"]',
       ];
       const elements = selectors.flatMap((selector) =>
-        [...document.querySelectorAll(selector)].slice(0, 30).map((element) => {
+        [...document.querySelectorAll(selector)].filter(visible).slice(0, 30).map((element) => {
           const rect = element.getBoundingClientRect();
           const style = getComputedStyle(element);
           return {
@@ -150,6 +222,7 @@ try {
 
     results.push({ viewport, data });
     await page.close();
+    await context.close();
   }
 } finally {
   await browser.close();
