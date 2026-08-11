@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web UIデザインレビュー"
+  short_description: "実画面を計測・修正・再評価してWeb UIを改善"
+  default_prompt: "このWebページをPlaywrightでdesktopとmobile確認し、診断・実装修正・再計測・再評価まで行ってください。修正前後のスクリーンショット、spacing rhythm、typography、変更理由、残課題を報告してください。レビューのみの場合は編集しないでください。"
