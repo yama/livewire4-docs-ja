@@ -52,6 +52,10 @@
 
 html { scroll-behavior: smooth; }
 
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
 .VPNav { border-bottom-color: color-mix(in srgb, var(--livewire-border) 78%, transparent); background: color-mix(in srgb, var(--vp-c-bg) 90%, transparent); }
 .VPNavBar { background: color-mix(in srgb, var(--vp-c-bg) 90%, transparent); backdrop-filter: blur(16px); }
 .VPNavBarTitle .title { color: var(--livewire-ink); font-weight: 720; letter-spacing: -0.02em; }
@@ -120,9 +124,6 @@ html { scroll-behavior: smooth; }
 .VPHero .image-container { width: 100%; height: 100%; transform: none; }
 .livewire-hero-art { position: absolute; inset: 0; width: 100%; height: 100%; }
 .livewire-hero-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.livewire-hero-art .hero-art-dark { display: none; }
-.dark .livewire-hero-art .hero-art-light { display: none; }
-.dark .livewire-hero-art .hero-art-dark { display: block; }
 .dark .VPHero { border-color: #263852; background: #010820; }
 
 .livewire-home { width: min(var(--livewire-home-max), calc(100% - 48px)); margin: 17px auto 0; }
