@@ -38,7 +38,7 @@
 
 @media (min-width: 960px) {
   .VPHero {
-    padding-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 64px) !important;
+    padding-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 40px) !important;
   }
 }
 
