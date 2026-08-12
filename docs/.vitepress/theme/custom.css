@@ -1,0 +1,49 @@
+/* Home page visual rhythm overrides. Keep the VitePress structure intact. */
+.VPHome {
+  margin-bottom: 64px !important;
+}
+
+.VPHero {
+  padding-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 40px) !important;
+  padding-bottom: 32px !important;
+}
+
+.VPHero .tagline {
+  padding-top: 12px !important;
+}
+
+.VPHomeFeatures {
+  margin-bottom: 40px !important;
+}
+
+.VPHomeFeatures .VPFeature .title {
+  font-size: 17px;
+  line-height: 26px;
+}
+
+.VPHomeFeatures .VPFeature .details {
+  line-height: 22px;
+}
+
+@media (min-width: 640px) {
+  .VPHero {
+    padding-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 56px) !important;
+    padding-bottom: 48px !important;
+  }
+
+  .VPHero .tagline {
+    padding-top: 16px !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHero {
+    padding-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 64px) !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .VPHome {
+    margin-bottom: 48px !important;
+  }
+}
