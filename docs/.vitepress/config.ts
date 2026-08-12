@@ -5,6 +5,12 @@ export default defineConfig({
   title: 'Livewire 4 日本語ドキュメント',
   description: 'Livewire 4 公式ドキュメントの非公式日本語版',
   cleanUrls: true,
+  head: [
+    ['meta', { property: 'og:image', content: 'https://livewire4-docs-ja.kyms.jp/ogp.png' }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+  ],
   themeConfig: {
     siteTitle: '<strong>Livewire 4</strong> <small>日本語ドキュメント</small>',
     nav: [
