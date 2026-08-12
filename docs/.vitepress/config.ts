@@ -6,10 +6,15 @@ export default defineConfig({
   description: 'Livewire 4 公式ドキュメントの非公式日本語版',
   cleanUrls: true,
   themeConfig: {
+    siteTitle: '<strong>Livewire 4</strong> <small>日本語ドキュメント</small>',
     nav: [
-      { text: 'ホーム', link: '/' },
-      { text: 'ドキュメント', link: '/quickstart' },
-      { text: '公式Docs', link: 'https://livewire.laravel.com/docs/4.x/quickstart' },
+      { text: 'はじめに', link: '/quickstart', activeMatch: '^/(quickstart|installation|upgrading)(/|$|\\.md$)' },
+      { text: '基本', link: '/components', activeMatch: '^/(components|pages|properties|actions|forms|events|lifecycle-hooks|nesting|testing)(/|$|\\.md$)' },
+      { text: '機能', link: '/alpine', activeMatch: '^/(alpine|styles|navigate|islands|lazy|loading-states|validation|uploads|pagination|url|computed-properties|redirecting|downloads|teleport)(/|$|\\.md$)' },
+      { text: 'HTMLディレクティブ', link: '/wire-bind', activeMatch: '^/wire-(bind|click|submit|model|loading|navigate|current|cloak|dirty|confirm|transition|init|intersect|poll|offline|ignore|ref|replace|show|sort|stream|text)(/|$|\\.md$)' },
+      { text: 'PHPアトリビュート', link: '/attribute-async', activeMatch: '^/attribute-(async|computed|defer|isolate|js|json|layout|lazy|locked|modelable|on|reactive|renderless|session|title|transition|url|validate)(/|$|\\.md$)' },
+      { text: 'Bladeディレクティブ', link: '/directive-island', activeMatch: '^/directive-(island|placeholder|persist|teleport)(/|$|\\.md$)' },
+      { text: 'アドバンス', link: '/morph', activeMatch: '^/(morph|hydration|understanding-nesting|troubleshooting|security|csp|javascript|synthesizers|packages|contribution-guide)(/|$|\\.md$)' },
     ],
     sidebar: [
       {
@@ -81,7 +86,7 @@ export default defineConfig({
         ],
       },
       {
-        text: 'PHP Attributes',
+        text: 'PHPアトリビュート',
         items: [
           { text: 'Async', link: '/attribute-async' },
           { text: 'Computed', link: '/attribute-computed' },
@@ -113,7 +118,7 @@ export default defineConfig({
         ],
       },
       {
-        text: 'Advanced',
+        text: 'アドバンス',
         items: [
           { text: 'Morphing', link: '/morph' },
           { text: 'Hydration', link: '/hydration' },

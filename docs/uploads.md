@@ -249,7 +249,7 @@ new class extends Component {
 
 アプリケーションサーバーを経由せず、Livewireの一時アップロードをS3バケットへ保存するには、`.env` ファイルの `LIVEWIRE_TEMPORARY_FILE_UPLOAD_DISK` 環境変数を `s3`（または `s3` ドライバーを使う別のカスタムディスク）に設定します。
 
-```env
+```text
 LIVEWIRE_TEMPORARY_FILE_UPLOAD_DISK=s3
 ```
 
