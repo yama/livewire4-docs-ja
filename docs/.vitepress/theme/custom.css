@@ -25,7 +25,7 @@
   --vp-c-bg-alt: #f8f6fc;
   --vp-c-divider: var(--livewire-border);
   --vp-nav-height: 86px;
-  --vp-font-family-base: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  --vp-font-family-base: inter, ui-sans-serif, system-ui, -apple-system, blinkmacsystemfont, "Hiragino Sans", "Noto Sans JP", sans-serif;
 }
 
 .dark {
@@ -83,7 +83,7 @@ html { scroll-behavior: smooth; }
   color: var(--livewire-purple);
   font-weight: 700;
   line-height: 1;
-  background-color: currentColor;
+  background-color: currentcolor;
   mask-repeat: no-repeat;
   mask-position: center;
   mask-size: contain;
