@@ -7,7 +7,7 @@ const isDesktop = ref(false)
 let mediaQuery: MediaQueryList | undefined
 
 const heroImage = computed(() =>
-  isDark.value ? '/images/livewire-hero-dark.png' : '/images/livewire-hero-light.png',
+  isDark.value ? '/images/livewire-hero-dark.jpg' : '/images/livewire-hero-light.jpg',
 )
 
 const updateViewport = (event?: MediaQueryListEvent) => {
