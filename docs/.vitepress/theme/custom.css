@@ -127,7 +127,7 @@ html { scroll-behavior: smooth; }
 .livewire-hero-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .dark .VPHero { border-color: #263852; background: #010820; }
 
-.livewire-home { width: min(var(--livewire-home-max), calc(100% - 48px)); margin: 17px auto 0; }
+.livewire-home { width: min(var(--livewire-home-max), calc(100% - 32px)); margin: 17px auto 0; }
 .livewire-benefits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 17px; }
 .benefit, .home-panel, .home-resource-links > a, .unofficial-notice { border: 1px solid var(--livewire-border); border-radius: 20px; background: var(--livewire-surface); box-shadow: var(--livewire-shadow); }
 .benefit { min-height: 105px; padding: 18px 15px; display: flex; align-items: flex-start; gap: 13px; }
@@ -227,7 +227,6 @@ html { scroll-behavior: smooth; }
   .VPHero .tagline { padding-top: 10px !important; font-size: 16px; }
   .VPHero .actions { justify-content: flex-start; padding-top: 18px; }
   .VPHero .image { display: none; }
-  .livewire-home { width: min(100% - 32px, 520px); }
   .livewire-benefits, .livewire-home-grid, .home-resource-links { grid-template-columns: 1fr; }
   .directive-list { grid-template-columns: repeat(2, 1fr); }
   .benefit { min-height: auto; }
