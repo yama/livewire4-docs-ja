@@ -1,10 +1,42 @@
 import { defineConfig } from 'vitepress'
 
+const alpineDocsUrl = 'https://alpinejs-docs-ja.kyms.jp'
+const alpineDocsOrigin = 'https://alpinejs.dev'
+
+function rewriteAlpineDocsLink(href: string) {
+  if (href === alpineDocsOrigin || href === `${alpineDocsOrigin}/`) {
+    return alpineDocsUrl
+  }
+
+  if (href.startsWith(`${alpineDocsOrigin}/`)) {
+    return `${alpineDocsUrl}${href.slice(alpineDocsOrigin.length)}`
+  }
+
+  return href
+}
+
 export default defineConfig({
   lang: 'ja',
   title: 'Livewire 4 日本語ドキュメント',
   description: 'Livewire 4 公式ドキュメントの非公式日本語版',
   cleanUrls: true,
+  markdown: {
+    config(md) {
+      const defaultLinkOpenRenderer = md.renderer.rules.link_open
+
+      md.renderer.rules.link_open = (tokens, index, options, env, self) => {
+        const href = tokens[index].attrGet('href')
+
+        if (href) {
+          tokens[index].attrSet('href', rewriteAlpineDocsLink(href))
+        }
+
+        return defaultLinkOpenRenderer
+          ? defaultLinkOpenRenderer(tokens, index, options, env, self)
+          : self.renderToken(tokens, index, options)
+      }
+    },
+  },
   head: [
     ['meta', { property: 'og:image', content: 'https://livewire4-docs-ja.kyms.jp/ogp.png' }],
     ['meta', { property: 'og:image:width', content: '1200' }],
