@@ -109,7 +109,7 @@ html { scroll-behavior: smooth; }
 
 .VPSidebarItem.level-1 > .item > .link .text::before { color: var(--livewire-purple) !important; }
 .VPHome { padding-top: calc(var(--vp-nav-height) + 14px); margin-bottom: 66px !important; }
-.VPHero { position: relative; width: calc(100% - 32px); max-width: var(--livewire-home-max) !important; min-height: 358px; margin: -34px auto 0 !important; padding: 30px 37px !important; overflow: hidden; border: 1px solid #f0e4cf; border-radius: 24px; background: #fef4e3; }
+.VPHero { position: relative; width: calc(100% - 32px); box-sizing: border-box; max-width: var(--livewire-home-max) !important; min-height: 358px; margin: -34px auto 0 !important; padding: 30px 37px !important; overflow: hidden; border: 1px solid #f0e4cf; border-radius: 24px; background: #fef4e3; }
 .VPHero .container { position: relative; z-index: 1; max-width: none !important; min-height: 358px; height: calc(100% + 60px); margin: -30px -37px; padding: 30px 37px; align-items: flex-start; }
 .VPHero .main { width: 64%; max-width: 680px; z-index: 1; }
 .VPHero .name { margin-bottom: 10px; font-size: 15px; font-weight: 730; color: var(--livewire-purple-strong); letter-spacing: .02em; }
