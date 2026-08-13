@@ -37,6 +37,12 @@ export default defineConfig({
       }
     },
   },
+  head: [
+    ['meta', { property: 'og:image', content: 'https://livewire4-docs-ja.kyms.jp/ogp.png' }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+  ],
   themeConfig: {
     siteTitle: '<strong>Livewire 4</strong> <small>日本語ドキュメント</small>',
     nav: [
