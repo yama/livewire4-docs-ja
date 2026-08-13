@@ -179,6 +179,7 @@ html { scroll-behavior: smooth; }
 
 @media (max-width: 959px) {
   :root { --vp-nav-height: 64px; }
+  .VPNav { position: sticky !important; top: 0; }
   .VPHome { padding-top: calc(var(--vp-nav-height) + 12px); }
   .VPHero { max-width: calc(100% - 64px) !important; min-height: 380px; margin: -64px auto 0 !important; padding: 40px 36px 36px !important; }
   .VPHero .container { min-height: 380px; height: calc(100% + 76px); margin: -40px -36px -36px; padding: 40px 36px 36px; }
