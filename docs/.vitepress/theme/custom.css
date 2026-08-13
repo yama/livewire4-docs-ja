@@ -109,7 +109,7 @@ html { scroll-behavior: smooth; }
 
 .VPSidebarItem.level-1 > .item > .link .text::before { color: var(--livewire-purple) !important; }
 .VPHome { padding-top: calc(var(--vp-nav-height) + 14px); margin-bottom: 66px !important; }
-.VPHero { position: relative; max-width: var(--livewire-home-max) !important; min-height: 358px; margin: -34px auto 0 !important; padding: 30px 37px !important; overflow: hidden; border: 1px solid #f0e4cf; border-radius: 24px; background: #fef4e3; }
+.VPHero { position: relative; width: calc(100% - 32px); max-width: var(--livewire-home-max) !important; min-height: 358px; margin: -34px auto 0 !important; padding: 30px 37px !important; overflow: hidden; border: 1px solid #f0e4cf; border-radius: 24px; background: #fef4e3; }
 .VPHero .container { position: relative; z-index: 1; max-width: none !important; min-height: 358px; height: calc(100% + 60px); margin: -30px -37px; padding: 30px 37px; align-items: flex-start; }
 .VPHero .main { width: 64%; max-width: 680px; z-index: 1; }
 .VPHero .name { margin-bottom: 10px; font-size: 15px; font-weight: 730; color: var(--livewire-purple-strong); letter-spacing: .02em; }
@@ -181,7 +181,7 @@ html { scroll-behavior: smooth; }
   :root { --vp-nav-height: 64px; }
   .VPNav { position: sticky !important; top: 0; }
   .VPHome { padding-top: calc(var(--vp-nav-height) + 12px); }
-  .VPHero { max-width: calc(100% - 64px) !important; min-height: 380px; margin: -64px auto 0 !important; padding: 40px 36px 36px !important; }
+  .VPHero { min-height: 380px; margin: -64px auto 0 !important; padding: 40px 36px 36px !important; }
   .VPHero .container { min-height: 380px; height: calc(100% + 76px); margin: -40px -36px -36px; padding: 40px 36px 36px; }
   .VPHero .main { width: 58%; max-width: 54%; }
   .VPHero .image { position: absolute; inset: 0; width: auto; }
@@ -219,7 +219,7 @@ html { scroll-behavior: smooth; }
   .VPNavBarTitle .title > span small { display: inline; font-size: 13px; }
   .VPSidebar { padding-left: 36px !important; padding-right: 24px !important; }
   .VPSidebarItem.level-1 > .item { padding-left: 8px; box-sizing: border-box; }
-  .VPHero { max-width: calc(100% - 28px) !important; min-height: 0; padding: 34px 22px 28px !important; }
+  .VPHero { min-height: 0; padding: 34px 22px 28px !important; }
   .VPHero .main { width: 100%; max-width: none; text-align: left; }
   .VPHero .heading, .VPHero .name, .VPHero .text, .VPHero .tagline { text-align: left; }
   .VPHero .name, .VPHero .text { margin-left: 0 !important; margin-right: 0 !important; }
