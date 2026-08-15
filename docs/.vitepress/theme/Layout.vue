@@ -2,6 +2,7 @@
 import DefaultTheme from 'vitepress/theme'
 import HomeHeroArt from './components/HomeHeroArt.vue'
 import HomeSections from './components/HomeSections.vue'
+import MobileBottomNav from './MobileBottomNav.vue'
 </script>
 
 <template>
@@ -11,6 +12,9 @@ import HomeSections from './components/HomeSections.vue'
     </template>
     <template #home-hero-after>
       <HomeSections />
+    </template>
+    <template #doc-after>
+      <MobileBottomNav />
     </template>
   </DefaultTheme.Layout>
 </template>
