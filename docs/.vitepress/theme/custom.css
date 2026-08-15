@@ -57,7 +57,7 @@ html { scroll-behavior: smooth; }
   html { scroll-behavior: auto; }
 }
 
-.VPNav { border-bottom-color: color-mix(in srgb, var(--livewire-border) 78%, transparent); background: color-mix(in srgb, var(--vp-c-bg) 90%, transparent); }
+.VPNav { position: sticky !important; top: 0; border-bottom-color: color-mix(in srgb, var(--livewire-border) 78%, transparent); background: color-mix(in srgb, var(--vp-c-bg) 90%, transparent); }
 .VPNavBar { background: color-mix(in srgb, var(--vp-c-bg) 90%, transparent); backdrop-filter: blur(16px); }
 .VPNavBarTitle .title { color: var(--livewire-ink); font-weight: 720; letter-spacing: -0.02em; }
 .VPNavBarTitle .title > span { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; }
@@ -67,6 +67,9 @@ html { scroll-behavior: smooth; }
 .VPNavBarMenuLink { border-bottom: 3px solid transparent; font-size: 17px !important; font-weight: 650 !important; }
 .VPNavBarMenuLink:hover, .VPNavBarMenuLink.active { color: var(--livewire-purple-strong); }
 .VPNavBarMenuLink.active { border-bottom-color: var(--livewire-purple-strong); }
+.VPNavBarHamburger:not(.active) .top,
+.VPNavBarHamburger:not(.active) .middle,
+.VPNavBarHamburger:not(.active) .bottom { transform: translateX(0); }
 .VPSidebar { border-right-color: var(--livewire-border); background: var(--vp-c-bg-alt); }
 .VPSidebarItem .text { font-size: 16px; font-weight: 400 !important; line-height: 22.4px; }
 .VPSidebarItem.level-0 > .item > .text { font-size: 17px; font-weight: 760 !important; line-height: 28px; }
@@ -180,7 +183,6 @@ html { scroll-behavior: smooth; }
 
 @media (max-width: 959px) {
   :root { --vp-nav-height: 64px; }
-  .VPNav { position: sticky !important; top: 0; }
   .VPHome { padding-top: calc(var(--vp-nav-height) + 12px); }
   .VPHero { min-height: 380px; margin: -64px auto 0 !important; padding: 40px var(--livewire-hero-gutter) 36px !important; }
   .VPHero .main { width: min(100%, 592px); max-width: none; }
