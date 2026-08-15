@@ -210,7 +210,7 @@ html { scroll-behavior: smooth; }
 }
 
 @media (min-width: 1400px) {
-  .VPNavBarTitle, .VPNavBarTitle.has-sidebar { margin-left: 4px; }
+  .VPNavBarTitle, .VPNavBarTitle.has-sidebar { margin-left: -22px; }
 }
 
 @media (max-width: 639px) {
