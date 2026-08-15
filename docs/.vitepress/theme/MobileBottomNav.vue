@@ -32,7 +32,12 @@ function toggleMenu() {
   }
 
   if (menuButton.getAttribute('aria-expanded') === 'true') {
-    document.querySelector<HTMLElement>('.VPBackdrop')?.click()
+    const backdrop = document.querySelector<HTMLElement>('.VPBackdrop')
+    if (backdrop) {
+      backdrop.click()
+    } else {
+      document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }))
+    }
   } else {
     menuButton.click()
   }
@@ -91,6 +96,7 @@ onBeforeUnmount(() => {
       <span aria-hidden="true">‹</span>
       <span>前へ</span>
     </a>
+    <span v-else class="mobile-bottom-nav-spacer" aria-hidden="true" />
     <button type="button" :disabled="!headers.length" :aria-expanded="outlineOpen" aria-controls="mobile-bottom-outline" @click="headers.length && (outlineOpen = !outlineOpen)">
       <span>目次</span>
       <span aria-hidden="true">⌃</span>
@@ -99,6 +105,7 @@ onBeforeUnmount(() => {
       <span>次へ</span>
       <span aria-hidden="true">›</span>
     </a>
+    <span v-else class="mobile-bottom-nav-spacer" aria-hidden="true" />
     <div v-if="outlineOpen" id="mobile-bottom-outline" class="mobile-bottom-outline">
       <a v-for="header in headers" :key="header.link" :href="header.link" :class="`level-${header.level}`" @click="closeOutline">{{ header.title }}</a>
     </div>

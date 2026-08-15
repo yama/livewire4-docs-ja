@@ -57,7 +57,7 @@ html { scroll-behavior: smooth; }
   html { scroll-behavior: auto; }
 }
 
-.VPNav { position: sticky !important; top: 0; border-bottom-color: color-mix(in srgb, var(--livewire-border) 78%, transparent); background: color-mix(in srgb, var(--vp-c-bg) 90%, transparent); }
+.VPNav { border-bottom-color: color-mix(in srgb, var(--livewire-border) 78%, transparent); background: color-mix(in srgb, var(--vp-c-bg) 90%, transparent); }
 .VPNavBar { background: color-mix(in srgb, var(--vp-c-bg) 90%, transparent); backdrop-filter: blur(16px); }
 .VPNavBarTitle .title { color: var(--livewire-ink); font-weight: 720; letter-spacing: -0.02em; }
 .VPNavBarTitle .title > span { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; }
@@ -185,6 +185,7 @@ html { scroll-behavior: smooth; }
 
 @media (max-width: 959px) {
   :root { --vp-nav-height: 64px; }
+  .VPNav { position: sticky !important; top: 0; }
   .VPHome { padding-top: calc(var(--vp-nav-height) + 12px); }
   .VPHero { min-height: 380px; margin: -64px auto 0 !important; padding: 40px var(--livewire-hero-gutter) 36px !important; }
   .VPHero .main { width: min(100%, 592px); max-width: none; }
@@ -238,16 +239,17 @@ html { scroll-behavior: smooth; }
 
   .VPLocalNav { display: none !important; }
   .VPDocFooter .prev-next { display: none; }
-  .VPDoc { padding-bottom: 76px; }
+  .VPDoc { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
   .mobile-bottom-nav {
     position: fixed;
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 70;
+    z-index: var(--vp-z-index-local-nav);
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     min-height: 58px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     border-top: 1px solid var(--livewire-border);
     background: color-mix(in srgb, var(--vp-c-bg) 96%, transparent);
     box-shadow: 0 -8px 24px rgba(33, 27, 59, .1);
