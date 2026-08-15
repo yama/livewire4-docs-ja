@@ -323,6 +323,7 @@ html { scroll-behavior: smooth; }
     z-index: var(--vp-z-index-local-nav);
     display: block !important;
     width: auto !important;
+    padding: 0 !important;
     border: 1px solid var(--livewire-border);
     border-radius: 12px;
     background: color-mix(in srgb, var(--vp-c-bg) 94%, transparent);
@@ -331,12 +332,12 @@ html { scroll-behavior: smooth; }
   }
   .VPLocalNav .container { display: block; }
   .VPLocalNav .menu { display: none; }
-  .VPLocalNavOutlineDropdown { padding: 10px; }
+  .VPLocalNavOutlineDropdown { padding: 6px !important; }
   .VPLocalNavOutlineDropdown button {
     display: grid;
     place-items: center;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     padding: 0;
   }
   .VPLocalNavOutlineDropdown .menu-text {
