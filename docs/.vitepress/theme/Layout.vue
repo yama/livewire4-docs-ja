@@ -8,10 +8,17 @@ import MobileBottomNav from './MobileBottomNav.vue'
 const mobileQuery = '(max-width: 639px)'
 let lastScrollY = 0
 let scrollTicking = false
+let scrollFrame: number | undefined
 let mobileMediaQuery: MediaQueryList | undefined
 
+function setChromeVisibility(hidden: boolean) {
+  document.documentElement.classList.toggle('mobile-chrome-hidden', hidden)
+  document.querySelector<HTMLElement>('.VPNav')?.toggleAttribute('inert', hidden)
+  document.querySelector<HTMLElement>('.mobile-bottom-nav')?.toggleAttribute('inert', hidden)
+}
+
 function setChromeVisible() {
-  document.documentElement.classList.remove('mobile-chrome-hidden')
+  setChromeVisibility(false)
 }
 
 function updateChromeVisibility() {
@@ -25,12 +32,12 @@ function updateChromeVisibility() {
 
   const currentScrollY = window.scrollY
   const scrollDelta = currentScrollY - lastScrollY
-  const menuIsOpen = document.querySelector('.VPBackdrop') !== null
+  const menuIsOpen = document.querySelector('.VPLocalNav .menu')?.getAttribute('aria-expanded') === 'true'
 
   if (currentScrollY <= 8 || scrollDelta < 0 || menuIsOpen) {
     setChromeVisible()
   } else if (scrollDelta > 0) {
-    document.documentElement.classList.add('mobile-chrome-hidden')
+    setChromeVisibility(true)
   }
 
   lastScrollY = currentScrollY
@@ -39,7 +46,10 @@ function updateChromeVisibility() {
 function handleScroll() {
   if (!scrollTicking) {
     scrollTicking = true
-    window.requestAnimationFrame(updateChromeVisibility)
+    scrollFrame = window.requestAnimationFrame(() => {
+      scrollFrame = undefined
+      updateChromeVisibility()
+    })
   }
 }
 
@@ -56,6 +66,11 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  if (scrollFrame !== undefined) {
+    window.cancelAnimationFrame(scrollFrame)
+    scrollFrame = undefined
+    scrollTicking = false
+  }
   mobileMediaQuery?.removeEventListener('change', handleMobileBreakpointChange)
   window.removeEventListener('scroll', handleScroll)
   setChromeVisible()
