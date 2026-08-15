@@ -22,17 +22,10 @@ const pageItems = computed(() => {
 const currentIndex = computed(() => pageItems.value.findIndex(item => item.link === route.path))
 const previous = computed(() => currentIndex.value > 0 ? pageItems.value[currentIndex.value - 1] : undefined)
 const next = computed(() => currentIndex.value >= 0 ? pageItems.value[currentIndex.value + 1] : undefined)
-const isHome = computed(() => route.path === '/')
-
-function getMenuButton() {
-  return document.querySelector<HTMLButtonElement>(
-    isHome.value ? '.VPNavBarHamburger' : '.VPLocalNav .menu'
-  )
-}
 
 function toggleMenu() {
   closeOutline()
-  const menuButton = getMenuButton()
+  const menuButton = document.querySelector<HTMLButtonElement>('.VPLocalNav .menu')
   if (!menuButton) {
     menuOpen.value = false
     return
@@ -46,7 +39,7 @@ function toggleMenu() {
 }
 
 function syncMenuState() {
-  const menuButton = getMenuButton()
+  const menuButton = document.querySelector<HTMLButtonElement>('.VPLocalNav .menu')
   menuOpen.value = menuButton?.getAttribute('aria-expanded') === 'true'
 }
 
@@ -74,7 +67,7 @@ onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
   syncMenuState()
 
-  const menuButton = getMenuButton()
+  const menuButton = document.querySelector<HTMLButtonElement>('.VPLocalNav .menu')
   if (menuButton) {
     menuButtonObserver = new MutationObserver(syncMenuState)
     menuButtonObserver.observe(menuButton, { attributes: true, attributeFilter: ['aria-expanded'] })
@@ -90,7 +83,7 @@ onBeforeUnmount(() => {
 
 <template>
   <nav ref="nav" class="mobile-bottom-nav" aria-label="ページナビゲーション">
-    <button type="button" :aria-label="menuOpen ? 'メニューを閉じる' : 'メニューを開く'" :aria-controls="isHome ? 'VPNavScreen' : 'VPSidebarNav'" :aria-expanded="menuOpen" @click="toggleMenu">
+    <button type="button" :aria-label="menuOpen ? 'サイドメニューを閉じる' : 'サイドメニューを開く'" aria-controls="VPSidebarNav" :aria-expanded="menuOpen" @click="toggleMenu">
       <span aria-hidden="true">☰</span>
       <span>メニュー</span>
     </button>

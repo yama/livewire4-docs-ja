@@ -238,7 +238,7 @@ html { scroll-behavior: smooth; }
 
   .VPLocalNav { display: none !important; }
   .VPDocFooter .prev-next { display: none; }
-  .VPDoc, .VPContent.is-home { padding-bottom: 76px; }
+  .VPDoc { padding-bottom: 76px; }
   .mobile-bottom-nav {
     position: fixed;
     right: 0;

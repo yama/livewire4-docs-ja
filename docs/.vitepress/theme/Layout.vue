@@ -13,7 +13,7 @@ import MobileBottomNav from './MobileBottomNav.vue'
     <template #home-hero-after>
       <HomeSections />
     </template>
-    <template #layout-bottom>
+    <template #doc-after>
       <MobileBottomNav />
     </template>
   </DefaultTheme.Layout>
