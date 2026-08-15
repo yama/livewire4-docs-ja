@@ -206,7 +206,7 @@ html { scroll-behavior: smooth; }
   .VPNavBarTitle { margin-left: 0; }
 }
 
-@media (min-width: 768px) and (max-width: 1399px) {
+@media (min-width: 768px) and (max-width: 959px) {
   .VPNavBarTitle { margin-left: 0; }
   .VPNavBarMenu { display: none !important; }
   .VPNavBarHamburger { display: flex !important; }
@@ -307,6 +307,12 @@ html { scroll-behavior: smooth; }
 }
 
 @media (min-width: 960px) {
+  .VPNavBarMenu { display: flex !important; }
+  .VPNavBarAppearance,
+  .VPNavBarSocialLinks { display: flex !important; align-items: center; }
+  .VPNavBar .extra,
+  .VPNavBarHamburger { display: none !important; }
+
   /* Keep the desktop outline available as a compact floating control. */
   .VPLocalNav {
     position: fixed !important;
