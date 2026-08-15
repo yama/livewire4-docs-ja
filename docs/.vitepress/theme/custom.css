@@ -59,6 +59,7 @@ html { scroll-behavior: smooth; }
 
 .VPNav { border-bottom-color: color-mix(in srgb, var(--livewire-border) 78%, transparent); background: color-mix(in srgb, var(--vp-c-bg) 90%, transparent); }
 .VPNavBar { background: color-mix(in srgb, var(--vp-c-bg) 90%, transparent); backdrop-filter: blur(16px); }
+.VPNav, .mobile-bottom-nav { transition: transform 180ms ease; }
 .VPNavBarTitle .title { color: var(--livewire-ink); font-weight: 720; letter-spacing: -0.02em; }
 .VPNavBarTitle .title > span { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; }
 .VPNavBarTitle .title > span strong { font-size: 26px; font-weight: 760; letter-spacing: -.04em; }
@@ -255,6 +256,8 @@ html { scroll-behavior: smooth; }
     box-shadow: 0 -8px 24px rgba(33, 27, 59, .1);
     backdrop-filter: blur(16px);
   }
+  html.mobile-chrome-hidden .VPNav { transform: translateY(-100%); }
+  html.mobile-chrome-hidden .mobile-bottom-nav { transform: translateY(100%); }
   .mobile-bottom-nav > button,
   .mobile-bottom-nav-page {
     display: flex;
@@ -304,6 +307,10 @@ html { scroll-behavior: smooth; }
   .mobile-bottom-outline a:focus-visible { color: var(--livewire-purple-strong); background: var(--vp-c-brand-soft); }
   .mobile-bottom-outline a.level-3 { padding-left: 22px; }
   .mobile-bottom-outline a.level-4 { padding-left: 34px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .VPNav, .mobile-bottom-nav { transition: none; }
 }
 
 @media (min-width: 960px) {
