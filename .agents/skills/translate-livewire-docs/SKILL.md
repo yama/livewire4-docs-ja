@@ -28,6 +28,26 @@ description: Livewire公式ドキュメントのupstream変更を日本語版へ
 8. `npm ci` と `npm run docs:build` を実行し、意図しないファイル変更がないことを確認する。
 9. 翻訳完了後に `.upstream-version` を対象commit SHAへ更新する。未翻訳の変更が残る場合は更新しない。
 
+## エージェントから直接実行する場合
+
+ユーザーがこのスキルを使った翻訳更新とPR作成を依頼した場合は、上記の手順に加えて次を実行する。
+
+1. 現在の作業ツリーとブランチを確認する。無関係な変更がある場合は保持し、対象が重なる場合は作業を開始しない。
+2. `origin/main` と upstream の `livewire/livewire` `4.x` を取得し、`git worktree add -b <branch> <path> origin/main` で `origin/main` を基点とする隔離 worktree と翻訳用ブランチを作成する。現在の作業ブランチへ直接コミットしない。
+3. リポジトリ直下の `translation-progress.md` があれば、記録された対象 SHA が今回の upstream 対象 SHA と一致することを確認する。一致しない場合は `.upstream-version` から対象 SHA までを再走査し、古いチェックポイントだけを根拠に先行する変更を飛ばさない。そのうえで記録された「最後に翻訳済みのファイルと節」より後から再開する。ページごとの状態一覧や `pending` などの状態 enum は作成しない。
+4. 変更された日本語ページを特定し、翻訳、レビュー、完全性比較、build、`git diff --check` を行う。
+5. 1回で完了しない場合は、検証済みの最後のファイルと節だけを `translation-progress.md` に記録する。全変更が完了した場合だけ `.upstream-version` を更新し、進捗ファイルを削除する。
+6. 完了時は検証済みの対象ファイルと更新した `.upstream-version` を commit する。未完了時は検証済みの対象ファイルと `translation-progress.md` だけを commit する。その後、作業ブランチを push して `main` 向けのPRを1件作成する。PRは作成するが、自動でマージしない。
+7. 対象変更がない場合は、commit、push、PR作成を行わない。
+
+このスキルを直接呼び出す場合の指示例:
+
+```text
+$translate-livewire-docs を使って、upstream の未翻訳差分を検出し、
+translation-progress.md のチェックポイントから翻訳してください。
+検証後、main 向けのPRを作成してください。
+```
+
 ## 完全性不足時の再試行ループ
 
 upstreamとの完全性比較で見出し、本文、リスト、表、コードブロック、Callout / admonition、リンク、例示などの不足を検出した場合は、未完了の報告だけで停止しない。
