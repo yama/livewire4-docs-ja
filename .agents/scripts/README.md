@@ -6,7 +6,7 @@ upstream 同期 PR が `main` にマージされた後、次のコマンドで�
 .agents/scripts/translate-upstream-pr.sh
 ```
 
-このスクリプトは現在の作業ブランチを変更せず、`origin/main` から一時 worktree を作成してローカルの `codex exec` と `translate-livewire-docs` skill を起動します。エージェントが upstream 差分を特定し、翻訳、build、diff 検証、commit、push、PR 作成を行います。
+このスクリプトは現在の作業ブランチを変更せず、`origin/main` から一時 worktree を作成してローカルの `codex exec` と `translate-livewire-docs` skill を起動します。Codex は upstream 差分の特定、翻訳、build、diff 検証だけを行い、信頼されたラッパーが変更範囲を確認した後に commit、push、PR 作成を行います。
 
 翻訳が一度に完了しない場合だけ、リポジトリ直下の `translation-progress.md` に「ここまで翻訳済み」という単一のチェックポイントを保存します。次回実行時はそこから再開し、全対象が完了したら `.upstream-version` を更新して進捗ファイルを削除します。ページごとの状態一覧や `pending` などの状態管理は行いません。
 
