@@ -114,7 +114,7 @@ new class extends Component {
 
 Livewireコンポーネントの寿命中、毎回のリクエスト後に消去されるのではなく、算出プロパティの値をキャッシュしたい場合があります。その場合は[Laravelのキャッシュユーティリティ](https://laravel.com/docs/cache#retrieve-store)を使えます。
 
-以下は `user()` 算出プロパティの例です。Eloquentクエリを直接実行する代わりに `Cache::remember()` で包み、次回以降のリクエストではクエリを再実行せずLaravelのキャッシュから取得します。
+以下は `userName()` 算出プロパティの例です。Eloquentクエリを直接実行する代わりに `Cache::remember()` で包み、次回以降のリクエストではクエリを再実行せずLaravelのキャッシュから名前を取得します。
 
 ```php
 <?php // resources/views/components/⚡show-user.blade.php
@@ -128,13 +128,13 @@ new class extends Component {
     public $userId;
 
     #[Computed]
-    public function user()
+    public function userName()
     {
-        $key = 'user'.$this->getId();
+        $key = 'user-name'.$this->getId();
         $seconds = 3600; // 1時間...
 
         return Cache::remember($key, $seconds, function () {
-            return User::find($this->userId);
+            return User::find($this->userId)->name;
         });
     }
 
@@ -151,19 +151,30 @@ use Livewire\Attributes\Computed;
 use App\Models\User;
 
 #[Computed(persist: true)]
-public function user()
+public function userName()
 {
-    return User::find($this->userId);
+    return User::find($this->userId)->name;
 }
 ```
 
-上の例では、コンポーネントから `$this->user` にアクセスすると、ページ上のLivewireコンポーネントの寿命中キャッシュされ続けます。実際のEloquentクエリは1回だけ実行されます。
+上の例では、コンポーネントから `$this->userName` にアクセスすると、ページ上のLivewireコンポーネントの寿命中キャッシュされ続けます。実際のEloquentクエリは1回だけ実行されます。
 
 Livewireは永続化した値を3600秒（1時間）キャッシュします。`#[Computed]` 属性に追加の `seconds` パラメータを渡して、このデフォルトを上書きできます。
 
 ```php
 #[Computed(persist: true, seconds: 7200)]
 ```
+
+> [!warning] Laravel 13でのオブジェクトのキャッシュ
+> 新しいLaravel 13アプリケーションでは、キャッシュから明示的に許可されたPHPクラスだけがアンシリアライズされます。永続化またはキャッシュされた算出プロパティが返すオブジェクトをLaravelが復元できない場合、値が正しい状態に保たれるようLivewireがプロパティを再評価します。デバッグモードでは、キャッシュから値を提供できなかったため、アプリケーションログにも警告が記録されます。
+>
+> スカラー値または配列をキャッシュすることをおすすめします。オブジェクトを意図的にキャッシュするには、オブジェクトグラフに含まれるすべてのクラスを `config/cache.php` の `cache.serializable_classes` に追加してください。
+>
+> ```php
+> 'serializable_classes' => [
+>     App\Models\User::class,
+> ],
+> ```
 
 > [!tip] `unset()` はメモとキャッシュの両方を消去する
 > 前述のとおり、PHPの `unset()` メソッドで算出プロパティのメモを消去できます。これは `persist: true` パラメータを使う算出プロパティにも適用されます。永続化した算出プロパティに対して `unset()` を呼び出すと、リクエスト内のメモだけでなく、Laravelのキャッシュにある基礎のキャッシュ値も消去されます。
@@ -177,13 +188,13 @@ use Livewire\Attributes\Computed;
 use App\Models\Post;
 
 #[Computed(cache: true)]
-public function posts()
+public function postTitles()
 {
-    return Post::all();
+    return Post::query()->pluck('title', 'id')->all();
 }
 ```
 
-キャッシュの期限が切れるか破棄されるまで、アプリケーション内のこのコンポーネントのすべてのインスタンスが `$this->posts` の同じキャッシュ値を共有します。
+キャッシュの期限が切れるか破棄されるまで、アプリケーション内のこのコンポーネントのすべてのインスタンスが `$this->postTitles` の同じキャッシュ値を共有します。
 
 算出プロパティのキャッシュを手動で消去したい場合は、`key` パラメータで独自のキャッシュキーを指定します。
 
@@ -192,9 +203,9 @@ use Livewire\Attributes\Computed;
 use App\Models\Post;
 
 #[Computed(cache: true, key: 'homepage-posts')]
-public function posts()
+public function postTitles()
 {
-    return Post::all();
+    return Post::query()->pluck('title', 'id')->all();
 }
 ```
 
