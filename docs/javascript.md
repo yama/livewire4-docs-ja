@@ -184,6 +184,14 @@ Livewire.hook('component.init', ({ component, cleanup }) => {
 })
 ```
 
+イベントリスナー、スクリプト、サーバーからディスパッチされたJavaScriptなど、Livewireの初期エフェクトに依存する高度な連携には`component.initialized`を使います。これはそれらのエフェクトが処理された後、Livewireがコンポーネントの子孫要素の初期化を続行する前に実行されます。
+
+```js
+Livewire.hook('component.initialized', ({ component }) => {
+    //
+})
+```
+
 詳しくは、[componentオブジェクトのドキュメント](#componentオブジェクト)を参照してください。
 
 ### DOM要素の初期化
@@ -265,7 +273,7 @@ new class extends Component {
 };
 ```
 
-JavaScript式`alert('Post saved!')`は、サーバー上で投稿がデータベースへ保存された後、クライアント上で実行されます。
+JavaScript式`alert('Post saved!')`は、サーバー上で投稿がデータベースへ保存され、レスポンスのDOM morphが完了した後、クライアント上で実行されます。
 
 式の中では、現在のコンポーネントの`$wire`オブジェクトにアクセスできます。
 
@@ -813,19 +821,24 @@ $wire.interceptMessage(({ message, cancel, onSend, onCancel, onSuccess, onSkippe
     // message.component / message.actions / message.isSkipped()
     onSend(({ payload }) => { /* payload: { snapshot, updates, calls } */ })
     onCancel(() => {})
-    onSuccess(({ payload, onSync, onEffect, onMorph, onRender }) => {
+    onSuccess(({ payload, onSync, onEffect, onMorph, onMorphed, onRender }) => {
         onSync(() => {})
         onEffect(() => {})
-        onMorph(async () => {})
+        onMorph(async () => {})   // 高度な用途: DOM morphに待機が必要な処理を追加
+        onMorphed(() => {})       // すべてのDOM morph処理の完了後
         onRender(() => {})
     })
     onSkipped(() => { /* サーバーが意図的にスキップ */ })
     onError(({ response, body, preventDefault }) => { preventDefault() })
     onFailure(({ error }) => {})
-    onStream(({ json }) => { /* 解析済みストリームチャンク */ })
+    onStream(async ({ json }) => { /* 解析済みストリームチャンク */
+        // 次のチャンクが処理される前に非同期処理が待機されます
+    })
     onFinish(() => {})
 })
 ```
+
+`onMorph`は、Livewireが完了を待機する必要がある非同期のDOM処理を追加するための高度なフックです。更新されたDOMにアクセスする必要がある場合の多くは`onMorphed`を使うべきです。これはレスポンスに含まれるコンポーネント、アイランド、スロットのすべてのmorphが完了した後、アクションのPromiseがresolveされて`onFinish`が実行される前に実行されます。
 
 #### 実行順
 
@@ -834,9 +847,10 @@ $wire.interceptMessage(({ message, cancel, onSend, onCancel, onSuccess, onSkippe
 1. `onSuccess` — サーバーの応答直後
 2. `onSync` — 状態をマージした後
 3. `onEffect` — エフェクトを処理した後
-4. `onMorph` — DOMのmorph後
-5. `onFinish` — morph完了後
-6. `onRender` — `requestAnimationFrame`内（描画後）
+4. `onMorph` — 待機対象のDOM morphフェーズ中
+5. `onMorphed` — すべてのDOM morph処理の完了後
+6. `onFinish` — `onMorphed`の後
+7. `onRender` — 次の`requestAnimationFrame`内
 
 変更のないリアクティブな子など、メッセージがスキップされた場合は`onSuccess`の代わりに`onSkipped`が実行され、その後`onFinish`が実行されます。適用するmorphや描画がないため、morph・render系のフックは実行されません。アクションPromiseは`onFinish`と同時にresolveします。
 
